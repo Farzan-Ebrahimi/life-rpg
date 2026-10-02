@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIFE // سیستم پیشرفت</title>
+<!-- تنظیمات اپلیکیشن موبایل -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e1a">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- آیکون برنامه (از ایموجی استفاده شده تا نیازی به فایل عکس نباشه) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e1a;--surface:#111827;--surface-2:#1a2236;--border:#2a3550;--accent:#00e5ff;--accent-2:#b14aed;--success:#23d160;--danger:#ff3860;--warning:#ffb000;--text:#e4e9f2;--text-dim:#8793a8;--text-muted:#5a667d}
+body{font-family:'Vazirmatn',Tahoma,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:38px 38px;background-attachment:fixed}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.header{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.header-main{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-size:14px;font-weight:700;letter-spacing:4px;direction:ltr}
+.logo span{color:var(--accent)}
+.header-level{display:flex;align-items:center;gap:14px}
+.level-num{font-size:22px;font-weight:800;color:var(--accent);font-family:'Courier New',monospace;direction:ltr}
+.xp-mini{display:flex;flex-direction:column;gap:4px;min-width:140px}
+.xp-mini-text{font-size:10px;color:var(--text-muted);font-family:'Courier New',monospace;letter-spacing:1px;direction:ltr}
+.xp-mini-bar{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+.xp-mini-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .6s}
+.tabs{display:flex;padding:0 24px;border-top:1px solid var(--border);overflow-x:auto}
+.tab{background:none;border:none;color:var(--text-muted);padding:12px 20px;cursor:pointer;font-size:13px;position:relative;transition:color .2s;white-space:nowrap}
+.tab:hover{color:var(--text-dim)}
+.tab.active{color:var(--accent)}
+.tab.active::after{content:'';position:absolute;bottom:0;left:20px;right:20px;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+
+.view{display:none;padding:28px 24px;max-width:1100px;margin:0 auto}
+.view.active{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view-title{font-size:12px;color:var(--text-muted);margin-bottom:22px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:800px){.dash-grid{grid-template-columns:1fr}}
+.dash-hero{background:linear-gradient(135deg,rgba(0,229,255,.09),rgba(177,74,237,.09));border:1px solid var(--border);border-radius:14px;padding:26px;position:relative;overflow:hidden}
+.dash-hero::before{content:'';position:absolute;top:-50%;left:-10%;width:320px;height:320px;background:radial-gradient(circle,rgba(0,229,255,.16),transparent 70%);pointer-events:none}
+.dash-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:relative}
+.dash-hero-label{font-size:11px;color:var(--text-muted);margin-bottom:6px}
+.dash-hero-level{font-size:64px;font-weight:900;color:var(--accent);font-family:'Courier New',monospace;line-height:1;text-shadow:0 0 30px rgba(0,229,255,.35)}
+.dash-rank{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,176,0,.5);background:rgba(255,176,0,.1);color:var(--warning);font-size:13px;font-weight:700}
+.dash-rank b{font-size:20px;font-weight:400}
+.dash-hero-sub{font-size:13px;color:var(--text-dim);margin:10px 0 18px;position:relative}
+.dash-hero-bar{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-bottom:8px;position:relative}
+.dash-hero-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent));background-size:200% 100%;animation:shimmer 3s linear infinite;border-radius:4px;transition:width .6s;box-shadow:0 0 10px var(--accent)}
+@keyframes shimmer{to{background-position:-200% 0}}
+.dash-hero-xp{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;position:relative}
+.dash-daily{margin-top:18px;padding-top:14px;border-top:1px dashed var(--border);position:relative}
+.dash-daily-top{display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:6px}
+.dash-daily-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.dash-daily-bar div{height:100%;width:0;background:var(--success);transition:width .5s}
+.dash-stats{display:grid;grid-template-rows:repeat(3,1fr);gap:12px}
+.dash-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px}
+.dash-stat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.dash-stat-icon.xp{background:rgba(0,229,255,.15);color:var(--accent)}
+.dash-stat-icon.streak{background:rgba(255,56,96,.15);color:var(--danger)}
+.dash-stat-icon.done{background:rgba(35,209,96,.15);color:var(--success)}
+.dash-stat-label{font-size:11px;color:var(--text-muted);margin-bottom:2px}
+.dash-stat-value{font-size:24px;font-weight:800;font-family:'Courier New',monospace}
+
+.section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.section-title{font-size:13px;color:var(--text-dim);font-weight:600}
+.section-count{font-size:11px;color:var(--text-muted)}
+.refresh-btn{background:transparent;border:1px solid var(--border);color:var(--text-muted);width:28px;height:28px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;margin-inline-start:10px}
+.refresh-btn:hover{border-color:var(--accent);color:var(--accent)}
+.refresh-btn.loading{animation:spin 1s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:24px;color:var(--text-muted);font-size:12px;line-height:2}
+.empty .btn-add{margin-top:8px}
+
+.today-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.today-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px;transition:border-color .2s,box-shadow .3s}
+.today-card:hover{border-color:var(--accent)}
+.today-card.done{border-color:var(--success);box-shadow:0 0 14px rgba(35,209,96,.15)}
+.today-card.done .today-name{opacity:.6}
+.today-card.important-miss{border-color:var(--warning)}
+.today-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px}
+.today-name{font-size:13px;font-weight:500}
+.today-cat{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,255,.1);color:var(--accent);white-space:nowrap}
+.today-progress{height:4px;background:var(--bg);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.today-progress-fill{height:100%;background:var(--accent);transition:width .3s}
+.today-card.done .today-progress-fill{background:var(--success)}
+.today-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;gap:6px}
+.today-count{color:var(--text-dim);font-family:'Courier New',monospace}
+.today-xp{color:var(--accent);font-family:'Courier New',monospace;font-size:10px;direction:ltr}
+.today-actions{display:flex;gap:4px}
+.today-btn{background:var(--surface);color:var(--text);border:1px solid var(--border);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.today-btn:hover{border-color:var(--accent);color:var(--accent)}
+.today-btn.minus{color:var(--text-muted)}
+.today-btn.minus:hover{border-color:var(--danger);color:var(--danger)}
+
+.feed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.feed-item{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .2s;text-decoration:none;color:inherit;display:block}
+a.feed-item{cursor:pointer}
+a.feed-item:hover{border-color:var(--accent);transform:translateY(-2px)}
+.feed-source{font-size:11px;color:var(--accent);margin-bottom:6px}
+.feed-title{font-size:13px;font-weight:600;line-height:1.7;margin-bottom:6px}
+.feed-desc{font-size:12px;color:var(--text-dim);line-height:1.8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.feed-loading{text-align:center;padding:30px;color:var(--text-muted);font-size:12px}
+
+.quest-sections{display:flex;flex-direction:column;gap:20px}
+.quest-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.quest-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.quest-section-title{display:flex;align-items:center;gap:10px}
+.quest-section-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.quest-section-icon.daily{background:rgba(0,229,255,.15);color:var(--accent)}
+.quest-section-icon.main{background:rgba(177,74,237,.15);color:var(--accent-2)}
+.quest-section-icon.side{background:rgba(255,176,0,.15);color:var(--warning)}
+.quest-section-name{font-size:14px;font-weight:700}
+.quest-section-count{font-size:11px;color:var(--text-muted)}
+.btn-add{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;transition:all .2s}
+.btn-add:hover{border-color:var(--accent);color:var(--accent)}
+.quest-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;transition:all .2s}
+.quest-item:hover{border-color:var(--accent)}
+.quest-item.done{opacity:.45}
+.quest-item.done .quest-title{text-decoration:line-through}
+.quest-item.important{border-color:var(--warning)}
+.quest-item.overdue{border-color:var(--danger)}
+.quest-item.inactive{opacity:.5}
+.quest-item.inactive .quest-check,.quest-item.inactive .daily-counter{pointer-events:none;opacity:.35}
+.quest-check{width:22px;height:22px;border:2px solid var(--border);border-radius:5px;cursor:pointer;flex-shrink:0;position:relative;transition:all .15s}
+.quest-check:hover{border-color:var(--success)}
+.quest-item.done .quest-check{background:var(--success);border-color:var(--success)}
+.quest-item.done .quest-check::after{content:'✓';color:#fff;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;font-weight:700}
+.quest-content{flex:1;min-width:0}
+.quest-title{font-size:13px;margin-bottom:4px;overflow-wrap:anywhere}
+.quest-meta{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--text-muted);flex-wrap:wrap}
+.tag{padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.tag-cat{background:rgba(0,229,255,.1);color:var(--accent)}
+.tag-important{background:rgba(255,176,0,.15);color:var(--warning)}
+.tag-overdue{background:rgba(255,56,96,.15);color:var(--danger)}
+.tag-deadline{background:rgba(177,74,237,.15);color:var(--accent-2)}
+.tag-pinned{background:rgba(255,176,0,.15);color:var(--warning)}
+.tag-off{background:rgba(255,255,255,.07);color:var(--text-dim)}
+.quest-xp{color:var(--accent);font-family:'Courier New',monospace;font-weight:700;font-size:11px;flex-shrink:0;direction:ltr}
+.quest-actions{display:flex;gap:4px;flex-shrink:0}
+.btn-icon{background:transparent;border:1px solid var(--border);color:var(--text-muted);width:30px;height:30px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s}
+.btn-icon:hover{border-color:var(--accent);color:var(--accent)}
+.btn-icon.pin-active{background:rgba(255,176,0,.15);border-color:var(--warning);color:var(--warning)}
+.btn-icon.delete:hover{border-color:var(--danger);color:var(--danger)}
+.daily-counter{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.counter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);width:26px;height:26px;border-radius:5px;cursor:pointer;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.counter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.counter-btn.minus:hover{border-color:var(--danger);color:var(--danger)}
+.counter-value{font-family:'Courier New',monospace;font-size:12px;color:var(--text-dim);min-width:34px;text-align:center;direction:ltr}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(8px);padding:20px}
+.modal.show{display:flex;animation:fadeIn .2s}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:18px}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px}
+input,select{width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:6px;font-family:inherit;font-size:13px}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checkbox-row{display:flex;align-items:center;gap:8px;padding:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;cursor:pointer}
+.checkbox-row input{width:auto}
+.checkbox-row label{font-size:12px;cursor:pointer;flex:1}
+.note-box{font-size:12px;color:var(--text-muted);padding:10px;background:var(--surface-2);border-radius:6px;line-height:1.8}
+.note-box strong{color:var(--accent)}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.btn{flex:1;padding:10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{background:#33ebff}
+.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--text-dim)}
+
+.prof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:700px){.prof-grid{grid-template-columns:1fr}}
+.prof-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.prof-card-title{font-size:12px;color:var(--text-muted);margin-bottom:12px}
+.prof-big{font-size:40px;font-weight:800;font-family:'Courier New',monospace;color:var(--accent);line-height:1;margin-bottom:6px}
+.prof-sub{font-size:12px;color:var(--text-dim)}
+.prof-list{display:flex;flex-direction:column}
+.prof-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.prof-row:last-child{border-bottom:none}
+.prof-row-label{font-size:12px;color:var(--text-dim)}
+.prof-row-value{font-family:'Courier New',monospace;font-weight:700}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:560px){.stats-grid{grid-template-columns:1fr}}
+.stat-row{background:var(--surface-2);padding:12px;border-radius:8px;border:1px solid var(--border)}
+.stat-row-head{display:flex;justify-content:space-between;margin-bottom:8px}
+.stat-row-name{font-size:12px;color:var(--text-dim)}
+.stat-row-value{font-family:'Courier New',monospace;font-weight:700;color:var(--accent)}
+.stat-row-bar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
+.stat-row-fill{height:100%;background:var(--accent);transition:width .5s}
+.stat-effect{font-size:11px;color:var(--success);margin-top:6px;line-height:1.5}
+.stat-points-banner{background:linear-gradient(135deg,rgba(255,176,0,.1),rgba(0,229,255,.1));border:1px solid var(--warning);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.stat-points-text{font-size:13px}
+.stat-points-text strong{color:var(--warning)}
+.btn-allocate{background:var(--warning);color:var(--bg);border:none;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
+.stat-alloc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-alloc-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;text-align:center;color:var(--text)}
+.stat-alloc-btn:hover{border-color:var(--accent);transform:translateY(-2px)}
+.stat-alloc-icon{font-size:24px;margin-bottom:6px}
+.stat-alloc-name{font-size:13px;font-weight:700;margin-bottom:2px;direction:ltr}
+.stat-alloc-label{font-size:11px;color:var(--text-dim)}
+
+.levelup-hero{text-align:center;padding:14px 0}
+.levelup-level{font-size:76px;font-weight:900;color:var(--accent);font-family:'Courier New',monospace;text-shadow:0 0 36px rgba(0,229,255,.55);line-height:1;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+.levelup-sub{color:var(--text-dim);font-size:13px;margin-top:8px}
+.levelup-rank{color:var(--warning);font-weight:700;font-size:15px;margin-top:6px}
+.reward-section{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;margin:14px 0}
+.reward-title{font-size:12px;color:var(--text-dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.reward-options{display:grid;gap:10px}
+.reward-option{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s}
+.reward-option:hover{border-color:var(--accent)}
+.reward-option.selected{border-color:var(--success);background:rgba(35,209,96,.06)}
+.reward-option.locked:not(.selected){opacity:.4;pointer-events:none}
+.reward-option-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.reward-option-desc{font-size:12px;color:var(--text-dim);line-height:1.7}
+.reward-option-category{display:inline-block;font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,229,255,.1);color:var(--accent);margin-bottom:6px}
+.achievement-badge,.unlock-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;margin:6px 4px 0}
+.achievement-badge{background:rgba(255,176,0,.15);border:1px solid var(--warning);color:var(--warning)}
+.unlock-badge{background:rgba(35,209,96,.15);border:1px solid var(--success);color:var(--success)}
+.achievement-badge span,.unlock-badge span{font-size:12px;font-weight:600}
+
+.toast{position:fixed;top:110px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--surface);border:1px solid var(--accent);padding:10px 20px;border-radius:8px;font-size:13px;opacity:0;transition:all .3s;z-index:1200;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.toast.penalty{border-color:var(--danger)}
+.toast.warning{border-color:var(--warning)}
+.float-xp{position:fixed;z-index:1300;pointer-events:none;font-family:'Courier New',monospace;font-weight:800;font-size:18px;color:var(--accent);text-shadow:0 0 10px var(--accent);transform:translate(-50%,-50%);animation:floatUp 1.1s ease-out forwards;direction:ltr}
+.float-xp.neg{color:var(--danger);text-shadow:0 0 10px var(--danger)}
+@keyframes floatUp{to{transform:translate(-50%,-90px);opacity:0}}
+.confetti{position:fixed;top:-20px;width:8px;height:14px;z-index:1250;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.8}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-main">
+    <div class="logo">LIFE<span>//</span>SYSTEM</div>
+    <div class="header-level">
+      <div class="level-num" id="hdr-level">LVL 1</div>
+      <div class="xp-mini">
+        <div class="xp-mini-text"><span id="hdr-xp-cur">0</span> / <span id="hdr-xp-max">100</span> XP</div>
+        <div class="xp-mini-bar"><div class="xp-mini-fill" id="hdr-xp-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-view="home">خانه</button>
+    <button class="tab" data-view="quests">ماموریت‌ها</button>
+    <button class="tab" data-view="notes">یادداشت‌ها</button>
+    <button class="tab" data-view="profile">پروفایل</button>
+  </nav>
+</header>
+
+<main>
+  <section class="view active" id="view-home">
+    <div class="view-title">نمای کلی</div>
+    <div class="dash-grid">
+      <div class="dash-hero">
+        <div class="dash-hero-top">
+          <div>
+            <div class="dash-hero-label">سطح فعلی</div>
+            <div class="dash-hero-level" id="dash-level">1</div>
+          </div>
+          <div class="dash-rank" id="dash-rank"></div>
+        </div>
+        <div class="dash-hero-sub" id="dash-sub"></div>
+        <div class="dash-hero-bar"><div class="dash-hero-fill" id="dash-xp-fill" style="width:0%"></div></div>
+        <div class="dash-hero-xp"><span id="dash-xp-cur">0</span> از <span id="dash-xp-max">100</span> XP تا سطح بعدی</div>
+        <div class="dash-daily">
+          <div class="dash-daily-top"><span>عادت‌های امروز</span><span id="dash-daily-text">0/0</span></div>
+          <div class="dash-daily-bar"><div id="dash-daily-fill"></div></div>
+        </div>
+      </div>
+      <div class="dash-stats">
+        <div class="dash-stat"><div class="dash-stat-icon xp">⚡</div><div><div class="dash-stat-label">XP امروز</div><div class="dash-stat-value" id="dash-today">0</div></div></div>
+        <div class="dash-stat"><div class="dash-stat-icon streak">🔥</div><div><div class="dash-stat-label">روزهای متوالی</div><div class="dash-stat-value" id="dash-streak">0</div></div></div>
+        <div class="dash-stat"><div class="dash-stat-icon done">✓</div><div><div class="dash-stat-label">ماموریت تکمیل‌شده</div><div class="dash-stat-value" id="dash-done">0</div></div></div>
+      </div>
+    </div>
+
+    <div class="section" id="dashboard-note-section" style="display:none">
+      <div class="section-head">
+        <div class="section-title">💡 یادآوری</div>
+        <button class="refresh-btn" onclick="renderRandomNote()" title="نکته بعدی">↻</button>
+      </div>
+      <div style="font-size:14px; line-height:1.8; color:var(--text); padding:10px 0; font-weight:500;" id="dashboard-random-note"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">روزانه‌های پین‌شده</div>
+        <div class="section-count" id="dash-pinned-count">0</div>
+      </div>
+      <div class="today-grid" id="dash-pinned-habits"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div style="display:flex;align-items:center">
+          <div class="section-title">الهام‌بخش</div>
+          <button class="refresh-btn" onclick="refreshFeed(this)" title="بارگذاری مجدد" aria-label="بارگذاری مجدد">↻</button>
+        </div>
+        <div class="section-count" id="feed-status"></div>
+      </div>
+      <div id="dash-feed"><div class="feed-loading">در حال بارگذاری...</div></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-quests">
+    <div class="view-title">ماموریت‌ها</div>
+    <div class="quest-sections">
+      <div class="quest-section">
+        <div class="quest-section-head">
+          <div class="quest-section-title"><div class="quest-section-icon daily">↻</div><div><div class="quest-section-name">روزانه</div><div class="quest-section-count" id="daily-count"></div></div></div>
+          <button class="btn-add" onclick="openAddModal('daily')">+ افزودن</button>
+        </div>
+        <div id="daily-list"></div>
+      </div>
+      <div class="quest-section">
+        <div class="quest-section-head">
+          <div class="quest-section-title"><div class="quest-section-icon main">◆</div><div><div class="quest-section-name">اصلی</div><div class="quest-section-count" id="main-count"></div></div></div>
+          <button class="btn-add" onclick="openAddModal('main')">+ افزودن</button>
+        </div>
+        <div id="main-list"></div>
+      </div>
+      <div class="quest-section">
+        <div class="quest-section-head">
+          <div class="quest-section-title"><div class="quest-section-icon side">◇</div><div><div class="quest-section-name">فرعی</div><div class="quest-section-count" id="side-count"></div></div></div>
+          <button class="btn-add" onclick="openAddModal('side')">+ افزودن</button>
+        </div>
+        <div id="side-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-notes">
+    <div class="view-title">یادداشت‌های مهم</div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">افزودن یادداشت جدید</div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <input type="text" id="note-input" maxlength="150" placeholder="یک نکته کوتاه و مهم بنویس..." style="flex:1">
+        <button class="btn btn-primary" onclick="addNote()" style="flex:0; padding:10px 20px;">افزودن</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">لیست یادداشت‌ها</div>
+        <div class="section-count" id="notes-count">0 مورد</div>
+      </div>
+      <div id="notes-list"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-profile">
+    <div class="view-title">پروفایل</div>
+    <div id="stat-points-banner-wrap"></div>
+    <div class="prof-grid">
+      <div class="prof-card"><div class="prof-card-title">سطح</div><div class="prof-big" id="prof-level">1</div><div class="prof-sub" id="prof-xp-sub"></div></div>
+      <div class="prof-card"><div class="prof-card-title">ماموریت‌ها</div><div class="prof-big" id="prof-quests">0</div><div class="prof-sub">تکمیل شده</div></div>
+      <div class="prof-card"><div class="prof-card-title">امتیاز ویژگی</div><div class="prof-big" id="prof-stat-points">0</div><div class="prof-sub">اختصاص‌نشده</div></div>
+    </div>
+    <div class="prof-card" style="margin-bottom:16px">
+      <div class="prof-card-title">آمار کلی</div>
+      <div class="prof-list" id="prof-stats-list"></div>
+    </div>
+    <div class="prof-card">
+      <div class="prof-card-title">ویژگی‌ها و اثرات</div>
+      <div class="stats-grid" id="prof-attr"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ADD MODAL -->
+<div class="modal" id="add-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title">افزودن ماموریت</div>
+    <div class="form-group">
+      <label class="form-label" for="m-title">عنوان</label>
+      <input type="text" id="m-title" maxlength="80" placeholder="مثلاً: ورزش صبحگاهی">
+    </div>
+    <div id="m-daily-fields" style="display:none">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="m-category">دسته‌بندی</label>
+          <select id="m-category">
+            <option value="general">عمومی</option><option value="nutrition">تغذیه</option><option value="fitness">ورزشی</option>
+            <option value="personal">شخصی</option><option value="work">کاری</option><option value="learning">یادگیری</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="m-frequency">تکرار</label>
+          <select id="m-frequency">
+            <option value="daily">هر روز</option><option value="every2">یک روز در میان</option>
+            <option value="every3">هر سه روز</option><option value="weekly">هفتگی</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m-target">هدف روزانه (تعداد)</label>
+        <input type="number" id="m-target" value="1" min="1" max="20">
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">💡 اگر ۱ باشد تیک‌زدنی است، اگر بیشتر باشد شمارنده (+۱ / −۱)</div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-row"><input type="checkbox" id="m-important"><label for="m-important">مهم (انجام ندادن = جریمه XP)</label></div>
+      </div>
+      <div class="note-box">📌 پاداش ثابت: <strong>۵ XP</strong> به ازای هر واحد</div>
+    </div>
+    <div id="m-main-fields" style="display:none">
+      <div class="form-group">
+        <label class="form-label" for="m-deadline">مهلت (روز، اختیاری)</label>
+        <input type="number" id="m-deadline" placeholder="بدون مهلت" min="0">
+      </div>
+      <div class="note-box">📌 پاداش ثابت: <strong>۱۰۰ XP</strong></div>
+    </div>
+    <div id="m-side-fields" style="display:none">
+      <div class="note-box">📌 پاداش ثابت: <strong>۳۰ XP</strong></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">انصراف</button>
+      <button class="btn btn-primary" onclick="saveQuest()">افزودن</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL UP MODAL -->
+<div class="modal" id="levelup-modal">
+  <div class="modal-box">
+    <div class="levelup-hero">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">ارتقاء سطح</div>
+      <div class="levelup-level" id="lu-level">2</div>
+      <div class="levelup-rank" id="lu-rank"></div>
+      <div class="levelup-sub">تبریک! یک قدم جلوتری</div>
+      <div id="lu-achievement-wrap"></div>
+      <div id="lu-unlock-wrap"></div>
+    </div>
+    <div class="reward-section">
+      <div class="reward-title">
+        <span>🎁 جایزه این سطح — یکی را انتخاب کن</span>
+        <button class="refresh-btn" onclick="refreshRewards(this)" title="پیشنهادات جدید" aria-label="پیشنهادات جدید">↻</button>
+      </div>
+      <div class="reward-options" id="lu-reward-options"></div>
+    </div>
+    <div class="reward-section">
+      <div class="reward-title"><span>⚡ <b id="lu-points">0</b> امتیاز ویژگی داری — کجا خرجش کنی؟</span></div>
+      <div class="stat-alloc-grid" style="margin:0">
+        <button class="stat-alloc-btn" onclick="allocateStat('STR')"><div class="stat-alloc-icon">⚔️</div><div class="stat-alloc-name">STR</div><div class="stat-alloc-label">قدرت</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('INT')"><div class="stat-alloc-icon">🧠</div><div class="stat-alloc-name">INT</div><div class="stat-alloc-label">هوش</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('DIS')"><div class="stat-alloc-icon">📏</div><div class="stat-alloc-name">DIS</div><div class="stat-alloc-label">نظم</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('CHA')"><div class="stat-alloc-icon">💬</div><div class="stat-alloc-name">CHA</div><div class="stat-alloc-label">کاریزما</div></button>
+      </div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%" onclick="skipStatAllocation()">بعداً اختصاص می‌دم</button>
+  </div>
+</div>
+
+<!-- STAT MODAL -->
+<div class="modal" id="stat-modal">
+  <div class="modal-box">
+    <div class="modal-title">اختصاص امتیاز ویژگی</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px">امتیازهای موجود: <strong style="color:var(--warning)" id="stat-modal-points">0</strong></div>
+    <div class="stat-alloc-grid">
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('STR')"><div class="stat-alloc-icon">⚔️</div><div class="stat-alloc-name">STR</div><div class="stat-alloc-label">قدرت</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('INT')"><div class="stat-alloc-icon">🧠</div><div class="stat-alloc-name">INT</div><div class="stat-alloc-label">هوش</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('DIS')"><div class="stat-alloc-icon">📏</div><div class="stat-alloc-name">DIS</div><div class="stat-alloc-label">نظم</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('CHA')"><div class="stat-alloc-icon">💬</div><div class="stat-alloc-name">CHA</div><div class="stat-alloc-label">کاریزما</div></button>
+    </div>
+    <button class="btn btn-ghost" style="width:100%" onclick="closeStatModal()">بستن</button>
+  </div>
+</div>
+
+<!-- REMINDER MODAL -->
+<div class="modal" id="reminder-modal">
+  <div class="modal-box">
+    <div class="modal-title">⚠️ یادآوری</div>
+    <div style="font-size:13px;color:var(--text-dim);line-height:1.9;margin-bottom:20px;white-space:pre-line" id="reminder-text"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="closeReminder()">متوجه شدم</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ============ CONSTANTS ============
+const STORAGE_KEY = 'lifeSystem_v11';
+const CATEGORIES = { general:'عمومی', nutrition:'تغذیه', fitness:'ورزشی', personal:'شخصی', work:'کاری', learning:'یادگیری' };
+const FREQUENCY = { daily:'هر روز', every2:'یک روز در میان', every3:'هر سه روز', weekly:'هفتگی' };
+const XP_DAILY = 5, XP_MAIN = 100, XP_SIDE = 30, XP_WATER = 1, MAX_PINNED = 8;
+
+const DEFAULT_HABITS = [
+  { id:'def-water', title:'💧 آب خوردن', target:8, xpPerUnit:XP_WATER, category:'nutrition', pinned:true, frequency:'daily' },
+  { id:'def-sleep', title:'🌙 خواب به موقع', target:1, xpPerUnit:XP_DAILY, category:'personal', pinned:true, frequency:'daily' }
+];
+
+const RANKS = [[1,'تازه‌کار','🌱'],[5,'مبتدی مصمم','⚔️'],[10,'جنگجو','🛡️'],[15,'قهرمان','🏆'],[20,'استاد','👑'],[30,'افسانه','💎'],[40,'اسطوره','🔥'],[50,'فرازمینی','⚡']];
+function rankOf(lvl) { return RANKS.filter(r => lvl >= r[0]).pop(); }
+
+const STAT_EFFECTS = {
+  STR: { label:'قدرت', icon:'⚔️', getEffect: v => { const b = Math.floor(v/10)*5; return b>0 ? `+${b}% XP از عادت‌های ورزشی` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } },
+  INT: { label:'هوش', icon:'🧠', getEffect: v => { const b = Math.floor(v/10)*5; return b>0 ? `+${b}% XP از عادت‌های یادگیری` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } },
+  DIS: { label:'نظم', icon:'📏', getEffect: v => { const r = Math.min(80, Math.floor(v/10)*10); return r>0 ? `-${r}% جریمه‌ها` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } },
+  CHA: { label:'کاریزما', icon:'💬', getEffect: v => { const b = Math.floor(v/10)*10; return b>0 ? `+${b}% پاداش توالی روزها` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } }
+};
+
+const defaultData = {
+  level:1, totalXP:0, xpInLevel:0, todayXP:0, streak:0, lastDate:0, lastActiveDate:0,
+  questsCompleted:0, statPoints:0, maxLevel:1, removedDefaults:[],
+  dailies:[], mains:[], sides:[], notes:[],
+  stats:{ STR:{value:5}, INT:{value:5}, DIS:{value:5}, CHA:{value:5} },
+  lastReminder:0, feedCache:{}, selectedRewards:[]
+};
+
+// ============ UTILS ============
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function safeUrl(u) { return /^https?:\/\//i.test(u || '') ? u : '#'; }
+function $(id) { return document.getElementById(id); }
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function dayNum(d) { const x = d ? new Date(d) : new Date(); return Math.floor(Date.UTC(x.getFullYear(), x.getMonth(), x.getDate()) / 86400000); }
+
+function loadData() {
+  let s = null;
+  try { s = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) { s = null; }
+  const base = JSON.parse(JSON.stringify(defaultData));
+  const d = Object.assign(base, s || {});
+  d.stats = Object.assign(JSON.parse(JSON.stringify(defaultData.stats)), (s && s.stats) || {});
+  ['lastDate', 'lastActiveDate'].forEach(k => { if (typeof d[k] === 'string') d[k] = d[k] ? dayNum(d[k]) : 0; });
+  d.maxLevel = Math.max(d.maxLevel || 1, d.level || 1);
+  d.feedCache = d.feedCache || {};
+  d.notes = d.notes || [];
+  return d;
+}
+let data = loadData();
+let currentModalType = 'daily';
+let lastPt = { x: innerWidth / 2, y: 140 };
+let pendingLevelUp = false;
+let rewardPicked = false;
+
+function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { console.warn('save failed', e); } }
+function xpForLevel(lvl) { return lvl * 100; }
+
+function getStatMultiplier(stat) { return 1 + Math.floor(data.stats[stat].value / 10) * 0.05; }
+function getPenaltyReduction() { return 1 - Math.min(80, Math.floor(data.stats.DIS.value / 10) * 10) / 100; }
+function getStreakBonus() {
+  if (data.streak <= 0) return 0;
+  const cha = 1 + Math.floor(data.stats.CHA.value / 10) * 0.1;
+  return Math.round(Math.min(data.streak, 10) * 2 * cha);
+}
+
+function recalcLevel() {
+  let lvl = 1, left = Math.max(0, data.totalXP);
+  while (left >= xpForLevel(lvl)) { left -= xpForLevel(lvl); lvl++; }
+  data.level = lvl;
+  data.xpInLevel = left;
+}
+
+function habitActiveOnDay(d, dn) {
+  const since = dn - dayNum(d.created);
+  if (since < 0) return false;
+  if (d.frequency === 'every2') return since % 2 === 0;
+  if (d.frequency === 'every3') return since % 3 === 0;
+  if (d.frequency === 'weekly') return since % 7 === 0;
+  return true;
+}
+function isHabitActiveToday(d) { return habitActiveOnDay(d, dayNum()); }
+
+// ============ DAY ROLLOVER ============
+function checkDay() {
+  const today = dayNum();
+  if (data.lastDate && data.lastDate < today) {
+    const gap = today - (data.lastActiveDate || data.lastDate);
+    if (gap === 1 && data.todayXP > 0) data.streak++;
+    else if (gap > 1) data.streak = 0;
+
+    const pm = getPenaltyReduction();
+    let total = 0, count = 0;
+    data.dailies.forEach(d => {
+      if (d.important && habitActiveOnDay(d, data.lastDate) && d.current < d.target) {
+        total += Math.floor((d.target - d.current) * d.xpPerUnit * pm);
+        count++;
+      }
+      d.current = 0; d.done = false; d.log = [];
+    });
+    if (gap >= 2) total += Math.floor(30 * (gap - 1) * pm);
+    total = Math.min(data.totalXP, total);
+    data.totalXP -= total;
+    data.todayXP = 0;
+    recalcLevel();
+    if (total > 0) {
+      const why = [];
+      if (count) why.push(`${count} عادت مهم انجام نشد`);
+      if (gap >= 2) why.push(`${gap - 1} روز غیرفعال`);
+      setTimeout(() => toast(`⚠️ ${why.join(' + ')}: -${total} XP`, 'penalty'), 400);
+    }
+  }
+  data.lastDate = today;
+  save();
+}
+
+// ============ XP ============
+function addXP(amount, category) {
+  let mult = 1;
+  if (category === 'fitness') mult = getStatMultiplier('STR');
+  else if (category === 'learning') mult = getStatMultiplier('INT');
+  let actual = Math.round(amount * mult);
+  if (data.todayXP === 0) actual += getStreakBonus();
+
+  data.totalXP += actual;
+  data.todayXP += actual;
+  data.lastActiveDate = dayNum();
+  recalcLevel();
+  if (data.level > data.maxLevel) {
+    data.statPoints += data.level - data.maxLevel;
+    data.maxLevel = data.level;
+    pendingLevelUp = true;
+  }
+  return actual;
+}
+
+function loseXP(amount) {
+  data.totalXP = Math.max(0, data.totalXP - amount);
+  data.todayXP = Math.max(0, data.todayXP - amount);
+  recalcLevel();
+}
+
+function commit(msg, delta) {
+  save();
+  render();
+  if (delta) popFloat((delta > 0 ? '+' : '') + delta, delta < 0);
+  if (pendingLevelUp) { pendingLevelUp = false; showLevelUp(); }
+  else if (msg) toast(msg, delta < 0 ? 'penalty' : '');
+}
+
+// ============ INIT DEFAULTS ============
+function initDefaults() {
+  let changed = false;
+  DEFAULT_HABITS.forEach(def => {
+    if (!data.dailies.find(d => d.id === def.id) && !data.removedDefaults.includes(def.id)) {
+      data.dailies.push({ id:def.id, title:def.title, target:def.target, current:0, done:false, log:[], xpPerUnit:def.xpPerUnit,
+        category:def.category, frequency:def.frequency, important:false, pinned:def.pinned, created:new Date().toISOString() });
+      changed = true;
+    }
+  });
+  if (changed) save();
+}
+
+// ============ NOTES ============
+function renderNotes() {
+  $('notes-count').textContent = `${data.notes.length} مورد`;
+  const list = $('notes-list');
+  if (data.notes.length === 0) {
+    list.innerHTML = '<div class="empty">هنوز یادداشتی اضافه نکرده‌ای. نکات مهم را اینجا بنویس تا فراموش نشوند.</div>';
+    return;
+  }
+  list.innerHTML = data.notes.map((note, idx) => `
+    <div class="quest-item">
+      <div class="quest-content">
+        <div class="quest-title" style="line-height:1.6">${esc(note)}</div>
+      </div>
+      <div class="quest-actions">
+        <button class="btn-icon delete" onclick="deleteNote(${idx})" aria-label="حذف">×</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addNote() {
+  const input = $('note-input');
+  const text = input.value.trim();
+  if (!text) { toast('متن یادداشت را وارد کن', 'penalty'); return; }
+  data.notes.push(text);
+  input.value = '';
+  save();
+  renderNotes();
+  renderRandomNote();
+  toast('✓ یادداشت اضافه شد');
+}
+
+function deleteNote(idx) {
+  if (!confirm('این یادداشت حذف شود؟')) return;
+  data.notes.splice(idx, 1);
+  save();
+  renderNotes();
+  renderRandomNote();
+}
+
+function renderRandomNote() {
+  const section = $('dashboard-note-section');
+  const display = $('dashboard-random-note');
+  if (!data.notes || data.notes.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+  const randomNote = data.notes[Math.floor(Math.random() * data.notes.length)];
+  display.textContent = randomNote;
+}
+
+// ============ INSPIRATION ============
+async function getJSON(url, ms = 8000) {
+  const c = new AbortController();
+  const t = setTimeout(() => c.abort(), ms);
+  try {
+    const r = await fetch(url, { signal: c.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+function wikiItem(a, category) {
+  if (!a || !a.titles) return null;
+  const desc = (a.description || a.extract || '').slice(0, 170);
+  if (!desc) return null;
+  return { title:a.titles.normalized, desc, link:a.content_urls?.desktop?.page || '#', category, source:'ویکی‌پدیا', lang:'fa' };
+}
+
+const INSPIRATION_SOURCES = [
+  { icon:'📖', fetch: async () => {
+      for (let back = 0; back < 3; back++) {
+        const d = new Date(); d.setDate(d.getDate() - back);
+        const p = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+        try {
+          const j = await getJSON(`https://fa.wikipedia.org/api/rest_v1/feed/featured/${p}`);
+          const out = [wikiItem(j.tfa, '⭐ مقاله برگزیده')];
+          (j.onthisday || []).slice(0, 4).forEach(e => { if (e.text) out.push({ title:`در چنین روزی — ${e.year}`, desc:e.text.slice(0,170), link:e.pages?.[0]?.content_urls?.desktop?.page || '#', category:'🕰️ تاریخ', source:'ویکی‌پدیا', lang:'fa' }); });
+          const ok = out.filter(Boolean);
+          if (ok.length) return ok;
+        } catch (e) { /* روز بعدی */ }
+      }
+      throw new Error('no wiki feed');
+  } },
+  { icon:'🎲', fetch: async () => [wikiItem(await getJSON('https://fa.wikipedia.org/api/rest_v1/page/random/summary'), '🎲 تصادفی')].filter(Boolean) },
+  { icon:'🎲', fetch: async () => [wikiItem(await getJSON('https://fa.wikipedia.org/api/rest_v1/page/random/summary'), '🎲 تصادفی')].filter(Boolean) },
+  { icon:'💭', fetch: async () => { const j = await getJSON('https://dummyjson.com/quotes/random'); return [{ title:j.author, desc:j.quote, link:'#', category:'💭 نقل قول', source:'DummyJSON', lang:'en' }]; } },
+  { icon:'💡', fetch: async () => { const j = await getJSON('https://api.adviceslip.com/advice'); return [{ title:'Advice', desc:j.slip.advice, link:'#', category:'💡 توصیه', source:'Advice Slip', lang:'en' }]; } },
+  { icon:'🏛️', fetch: async () => { const j = await getJSON('https://stoic-quotes.com/api/quote'); return [{ title:j.author, desc:j.text || j.body, link:'#', category:'🏛️ رواقی', source:'Stoic Quotes', lang:'en' }]; } },
+  { icon:'🌌', fetch: async () => { const j = await getJSON('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY'); return [{ title:j.title, desc:(j.explanation || '').slice(0,170), link:j.url || '#', category:'🌌 فضا', source:'NASA', lang:'en' }]; } }
+];
+
+async function fetchFromSources(count = 3) {
+  const settled = await Promise.allSettled(INSPIRATION_SOURCES.map(s =>
+    s.fetch().then(arr => arr.map(i => ({ ...i, sourceIcon:s.icon })))));
+  const seen = new Set();
+  const items = settled.filter(r => r.status === 'fulfilled').flatMap(r => r.value).filter(i => {
+    if (!i || !i.title || !i.desc) return false;
+    const k = i.title + '|' + i.desc;
+    if (seen.has(k)) return false;
+    seen.add(k); return true;
+  });
+  return shuffle(items).slice(0, count);
+}
+
+// ============ RENDER ============
+function render() { 
+  renderHeader(); 
+  renderDashboard(); 
+  renderQuests(); 
+  renderNotes(); 
+  renderRandomNote(); 
+  renderProfile(); 
+}
+
+function renderHeader() {
+  const needed = xpForLevel(data.level);
+  $('hdr-level').textContent = `LVL ${data.level}`;
+  $('hdr-xp-cur').textContent = data.xpInLevel;
+  $('hdr-xp-max').textContent = needed;
+  $('hdr-xp-fill').style.width = Math.min(100, (data.xpInLevel / needed) * 100) + '%';
+}
+
+function renderDashboard() {
+  const needed = xpForLevel(data.level);
+  const r = rankOf(data.level), next = RANKS.find(x => x[0] > data.level);
+  $('dash-level').textContent = data.level;
+  $('dash-rank').innerHTML = `<b>${r[2]}</b>${esc(r[1])}`;
+  $('dash-sub').textContent = next ? `${next[0] - data.level} سطح تا لقب «${next[1]}»` : 'به بالاترین لقب رسیدی';
+  $('dash-today').textContent = data.todayXP;
+  $('dash-streak').textContent = data.streak;
+  $('dash-done').textContent = data.questsCompleted;
+  $('dash-xp-cur').textContent = data.xpInLevel;
+  $('dash-xp-max').textContent = needed;
+  $('dash-xp-fill').style.width = Math.min(100, (data.xpInLevel / needed) * 100) + '%';
+
+  const active = data.dailies.filter(isHabitActiveToday);
+  const done = active.filter(d => d.done).length;
+  $('dash-daily-text').textContent = `${done}/${active.length}`;
+  $('dash-daily-fill').style.width = (active.length ? (done / active.length) * 100 : 0) + '%';
+
+  const pinned = active.filter(d => d.pinned);
+  $('dash-pinned-count').textContent = pinned.length;
+  $('dash-pinned-habits').innerHTML = pinned.length ? pinned.map(renderTodayCard).join('') : '<div class="empty">عادت پین‌شده‌ای برای امروز نیست</div>';
+}
+
+function renderTodayCard(d) {
+  const pct = Math.min(100, (d.current / d.target) * 100);
+  const maxXP = d.target * d.xpPerUnit, earned = d.current * d.xpPerUnit;
+  const miss = d.important && !d.done && d.current < d.target;
+  const box = d.target === 1;
+  return `
+    <div class="today-card ${d.done ? 'done' : ''} ${miss ? 'important-miss' : ''}">
+      <div class="today-top"><div class="today-name">${esc(d.title)}</div><div class="today-cat">${CATEGORIES[d.category] || 'عمومی'}</div></div>
+      <div class="today-progress"><div class="today-progress-fill" style="width:${pct}%"></div></div>
+      <div class="today-bottom">
+        ${box ? `
+          <div class="today-count">${d.done ? '✓ انجام شد' : 'انجام نشده'}</div>
+          <div class="today-xp">${d.done ? maxXP : 0}/${maxXP} XP</div>
+          <button class="today-btn" onclick="toggleDaily('${d.id}')" aria-label="تغییر وضعیت">${d.done ? '↺' : '✓'}</button>
+        ` : `
+          <div class="today-count">${d.current}/${d.target}</div>
+          <div class="today-xp">${earned}/${maxXP} XP</div>
+          <div class="today-actions">
+            ${d.current > 0 ? `<button class="today-btn minus" onclick="decDaily('${d.id}')" aria-label="کم کردن">−</button>` : ''}
+            ${d.current < d.target ? `<button class="today-btn" onclick="incDaily('${d.id}')" aria-label="اضافه کردن">+</button>` : ''}
+          </div>
+        `}
+      </div>
+    </div>`;
+}
+
+function renderQuests() {
+  const activeCount = data.dailies.filter(isHabitActiveToday).length;
+  $('daily-count').textContent = `${activeCount} عادت برای امروز · ${data.dailies.length} کل`;
+  $('daily-list').innerHTML = data.dailies.length ? data.dailies.map(renderDailyItem).join('') : '<div class="empty">هنوز عادت روزانه‌ای نداری. اولی را اضافه کن.</div>';
+
+  $('main-count').textContent = `${data.mains.filter(m => !m.done).length} ماموریت باز`;
+  $('main-list').innerHTML = data.mains.length ? data.mains.map(renderMainItem).join('') : '<div class="empty">ماموریت اصلی‌ای نیست. یک هدف بزرگ بنویس.</div>';
+
+  $('side-count').textContent = `${data.sides.filter(s => !s.done).length} ماموریت باز`;
+  $('side-list').innerHTML = data.sides.length ? data.sides.map(renderSideItem).join('') : '<div class="empty">ماموریت فرعی‌ای نیست.</div>';
+}
+
+function renderDailyItem(d) {
+  const earned = d.current * d.xpPerUnit, maxXP = d.target * d.xpPerUnit;
+  const box = d.target === 1, off = !isHabitActiveToday(d);
+  return `
+    <div class="quest-item ${d.done ? 'done' : ''} ${d.important && !d.done && !off ? 'important' : ''} ${off ? 'inactive' : ''}">
+      ${box ? `<div class="quest-check" onclick="toggleDaily('${d.id}')" role="checkbox" aria-checked="${d.done}"></div>` : ''}
+      <div class="quest-content">
+        <div class="quest-title">${esc(d.title)}</div>
+        <div class="quest-meta">
+          <span class="tag tag-cat">${CATEGORIES[d.category] || 'عمومی'}</span>
+          <span>${FREQUENCY[d.frequency]}</span>
+          ${off ? '<span class="tag tag-off">امروز نوبتش نیست</span>' : ''}
+          ${d.important ? '<span class="tag tag-important">مهم</span>' : ''}
+          ${d.pinned ? '<span class="tag tag-pinned">پین</span>' : ''}
+        </div>
+      </div>
+      ${!box ? `<div class="daily-counter">
+        <button class="counter-btn minus" onclick="decDaily('${d.id}')" aria-label="کم کردن">−</button>
+        <div class="counter-value">${d.current}/${d.target}</div>
+        <button class="counter-btn" onclick="incDaily('${d.id}')" aria-label="اضافه کردن">+</button>
+      </div>` : ''}
+      <div class="quest-xp">${earned}/${maxXP}</div>
+      <div class="quest-actions">
+        <button class="btn-icon ${d.pinned ? 'pin-active' : ''}" onclick="togglePin('${d.id}')" aria-label="پین">📌</button>
+        <button class="btn-icon delete" onclick="delDaily('${d.id}')" aria-label="حذف">×</button>
+      </div>
+    </div>`;
+}
+
+function renderMainItem(m) {
+  const overdue = m.deadline && new Date(m.deadline) < new Date() && !m.done;
+  return `
+    <div class="quest-item ${m.done ? 'done' : ''} ${overdue ? 'overdue' : ''}">
+      <div class="quest-check" onclick="toggleMain(${m.id})" role="checkbox" aria-checked="${m.done}"></div>
+      <div class="quest-content">
+        <div class="quest-title">${esc(m.title)}</div>
+        <div class="quest-meta">
+          ${m.deadline ? `<span class="tag tag-deadline">مهلت: ${formatDate(m.deadline)}</span>` : ''}
+          ${overdue ? '<span class="tag tag-overdue">عقب‌افتاده</span>' : ''}
+        </div>
+      </div>
+      <div class="quest-xp">+${XP_MAIN}</div>
+      <button class="btn-icon delete" onclick="delMain(${m.id})" aria-label="حذف">×</button>
+    </div>`;
+}
+
+function renderSideItem(s) {
+  return `
+    <div class="quest-item ${s.done ? 'done' : ''}">
+      <div class="quest-check" onclick="toggleSide(${s.id})" role="checkbox" aria-checked="${s.done}"></div>
+      <div class="quest-content"><div class="quest-title">${esc(s.title)}</div></div>
+      <div class="quest-xp">+${XP_SIDE}</div>
+      <button class="btn-icon delete" onclick="delSide(${s.id})" aria-label="حذف">×</button>
+    </div>`;
+}
+
+function renderProfile() {
+  $('prof-level').textContent = data.level;
+  $('prof-xp-sub').textContent = `${data.totalXP} XP کسب شده`;
+  $('prof-quests').textContent = data.questsCompleted;
+  $('prof-stat-points').textContent = data.statPoints;
+
+  $('stat-points-banner-wrap').innerHTML = data.statPoints > 0 ? `
+    <div class="stat-points-banner">
+      <div class="stat-points-text">🎯 <strong>${data.statPoints}</strong> امتیاز ویژگی آماده اختصاص است</div>
+      <button class="btn-allocate" onclick="openStatModal()">اختصاص بده</button>
+    </div>` : '';
+
+  const r = rankOf(data.level);
+  $('prof-stats-list').innerHTML = `
+    <div class="prof-row"><span class="prof-row-label">لقب</span><span class="prof-row-value">${r[2]} ${esc(r[1])}</span></div>
+    <div class="prof-row"><span class="prof-row-label">کل XP کسب‌شده</span><span class="prof-row-value">${data.totalXP}</span></div>
+    <div class="prof-row"><span class="prof-row-label">XP امروز</span><span class="prof-row-value">${data.todayXP}</span></div>
+    <div class="prof-row"><span class="prof-row-label">روزهای متوالی</span><span class="prof-row-value">${data.streak}</span></div>
+    <div class="prof-row"><span class="prof-row-label">ماموریت‌های باز</span><span class="prof-row-value">${data.mains.filter(m => !m.done).length + data.sides.filter(s => !s.done).length}</span></div>`;
+
+  $('prof-attr').innerHTML = Object.entries(data.stats).map(([k, s]) => {
+    const e = STAT_EFFECTS[k];
+    return `
+      <div class="stat-row">
+        <div class="stat-row-head"><span class="stat-row-name">${e.icon} ${k} · ${e.label}</span><span class="stat-row-value">${s.value}</span></div>
+        <div class="stat-row-bar"><div class="stat-row-fill" style="width:${Math.min(100, s.value)}%"></div></div>
+        <div class="stat-effect">${e.getEffect(s.value)}</div>
+      </div>`;
+  }).join('');
+}
+
+function formatDate(str) {
+  try { return new Date(str).toLocaleDateString('fa-IR', { month:'short', day:'numeric' }); } catch (e) { return str; }
+}
+
+// ============ ACTIONS ============
+function getDaily(id) { return data.dailies.find(x => x.id === id); }
+
+function incDaily(id) {
+  const d = getDaily(id);
+  if (!d || d.done || d.current >= d.target) return;
+  d.current++;
+  d.log = d.log || [];
+  const xp = addXP(d.xpPerUnit, d.category);
+  d.log.push(xp);
+  if (d.current >= d.target) d.done = true;
+  commit(d.done ? `✓ ${d.title} تکمیل شد` : `+${xp} XP`, xp);
+}
+
+function decDaily(id) {
+  const d = getDaily(id);
+  if (!d || d.current <= 0) return;
+  d.current--;
+  d.done = false;
+  const xp = (d.log && d.log.length) ? d.log.pop() : d.xpPerUnit;
+  loseXP(xp);
+  commit(`-${xp} XP`, -xp);
+}
+
+function toggleDaily(id) {
+  const d = getDaily(id);
+  if (!d) return;
+  d.log = d.log || [];
+  if (d.done) {
+    const xp = d.log.reduce((a, b) => a + b, 0) || d.current * d.xpPerUnit;
+    loseXP(xp);
+    d.done = false; d.current = 0; d.log = [];
+    commit(`-${xp} XP`, -xp);
+  } else {
+    let total = 0;
+    while (d.current < d.target) { d.current++; const a = addXP(d.xpPerUnit, d.category); d.log.push(a); total += a; }
+    d.done = true;
+    commit(`✓ ${d.title} انجام شد`, total);
+  }
+}
+
+function delDaily(id) {
+  const d = getDaily(id);
+  if (!d || !confirm(`«${d.title}» حذف شود؟`)) return;
+  if (id.startsWith('def-') && !data.removedDefaults.includes(id)) data.removedDefaults.push(id);
+  data.dailies = data.dailies.filter(x => x.id !== id);
+  save(); render();
+}
+
+function togglePin(id) {
+  const d = getDaily(id);
+  if (!d) return;
+  if (d.pinned) { d.pinned = false; toast('پین برداشته شد'); }
+  else {
+    if (data.dailies.filter(x => x.pinned).length >= MAX_PINNED) { toast(`حداکثر ${MAX_PINNED} عادت قابل پین است`, 'warning'); return; }
+    d.pinned = true; toast('پین شد');
+  }
+  save(); render();
+}
+
+function toggleQuest(list, id, base) {
+  const q = data[list].find(x => x.id === id);
+  if (!q) return;
+  q.done = !q.done;
+  if (q.done) {
+    q.earned = addXP(base);
+    data.questsCompleted++;
+    commit(`✓ ${q.title}`, q.earned);
+  } else {
+    const xp = q.earned != null ? q.earned : base;
+    q.earned = null;
+    loseXP(xp);
+    data.questsCompleted = Math.max(0, data.questsCompleted - 1);
+    commit(`-${xp} XP`, -xp);
+  }
+}
+function toggleMain(id) { toggleQuest('mains', id, XP_MAIN); }
+function toggleSide(id) { toggleQuest('sides', id, XP_SIDE); }
+
+function delQuest(list, id) {
+  const q = data[list].find(x => x.id === id);
+  if (!q || !confirm(`«${q.title}» حذف شود؟`)) return;
+  data[list] = data[list].filter(x => x.id !== id);
+  save(); render();
+}
+function delMain(id) { delQuest('mains', id); }
+function delSide(id) { delQuest('sides', id); }
+
+// ============ MODAL ============
+function openAddModal(type) {
+  currentModalType = type;
+  $('modal-title').textContent = type === 'daily' ? 'افزودن عادت روزانه' : type === 'main' ? 'افزودن ماموریت اصلی' : 'افزودن ماموریت فرعی';
+  $('m-daily-fields').style.display = type === 'daily' ? 'block' : 'none';
+  $('m-main-fields').style.display = type === 'main' ? 'block' : 'none';
+  $('m-side-fields').style.display = type === 'side' ? 'block' : 'none';
+  $('m-title').value = ''; $('m-target').value = 1; $('m-category').value = 'general';
+  $('m-frequency').value = 'daily'; $('m-important').checked = false; $('m-deadline').value = '';
+  $('add-modal').classList.add('show');
+  setTimeout(() => $('m-title').focus(), 50);
+}
+function closeModal() { $('add-modal').classList.remove('show'); }
+
+function saveQuest() {
+  const title = $('m-title').value.trim();
+  if (!title) { toast('عنوان را وارد کن', 'penalty'); return; }
+  if (currentModalType === 'daily') {
+    data.dailies.push({
+      id:'d' + Date.now(), title,
+      target:Math.min(20, Math.max(1, parseInt($('m-target').value) || 1)),
+      current:0, done:false, log:[], xpPerUnit:XP_DAILY,
+      category:$('m-category').value, frequency:$('m-frequency').value,
+      important:$('m-important').checked, pinned:false, created:new Date().toISOString()
+    });
+  } else if (currentModalType === 'main') {
+    const days = parseInt($('m-deadline').value);
+    let deadline = null;
+    if (days > 0) { const d = new Date(); d.setDate(d.getDate() + days); deadline = d.toISOString(); }
+    data.mains.push({ id:Date.now(), title, deadline, done:false, created:new Date().toISOString() });
+  } else {
+    data.sides.push({ id:Date.now(), title, done:false, created:new Date().toISOString() });
+  }
+  save(); closeModal(); render(); toast('✓ اضافه شد');
+}
+
+// ============ LEVEL UP ============
+function showLevelUp() {
+  const r = rankOf(data.level);
+  $('lu-level').textContent = data.level;
+  $('lu-rank').textContent = `${r[2]} ${r[1]}`;
+  $('lu-points').textContent = data.statPoints;
+  $('lu-achievement-wrap').innerHTML = data.level % 5 === 0 ? `<div class="achievement-badge"><span>🏅 رسیدن به سطح ${data.level}</span></div>` : '';
+  $('lu-unlock-wrap').innerHTML = RANKS.some(x => x[0] === data.level) ? `<div class="unlock-badge"><span>🎖️ لقب جدید: ${esc(r[1])}</span></div>` : '';
+  $('levelup-modal').classList.add('show');
+  confetti();
+  loadRewardOptions();
+}
+
+async function loadRewardOptions() {
+  const el = $('lu-reward-options');
+  rewardPicked = false;
+  window.currentRewardOptions = [];
+  if (!navigator.onLine) { el.innerHTML = '<div class="empty">📡 اینترنت وصل نیست؛ جایزه‌ها از اینترنت می‌آیند.<br>وقتی وصل شدی ↻ را بزن.</div>'; return; }
+  el.innerHTML = '<div class="feed-loading">در حال بارگذاری پیشنهادات...</div>';
+  try {
+    const items = await fetchFromSources(9);
+    const fresh = items.filter(i => !data.selectedRewards.some(r => r.title === i.title)).slice(0, 3);
+    if (!fresh.length) { el.innerHTML = '<div class="empty">فعلاً چیزی دریافت نشد. ↻ را بزن.</div>'; return; }
+    window.currentRewardOptions = fresh;
+    el.innerHTML = fresh.map((i, idx) => `
+      <div class="reward-option" onclick="selectReward(${idx})">
+        <div class="reward-option-category">${esc(i.category)}</div>
+        <div class="reward-option-title" dir="${i.lang === 'fa' ? 'rtl' : 'ltr'}">${esc(i.title)}</div>
+        <div class="reward-option-desc" dir="${i.lang === 'fa' ? 'rtl' : 'ltr'}">${esc(i.desc)}</div>
+      </div>`).join('');
+  } catch (e) {
+    el.innerHTML = '<div class="empty">خطا در بارگذاری پیشنهادات. ↻ را بزن.</div>';
+  }
+}
+
+function selectReward(idx) {
+  if (rewardPicked) return;
+  const item = (window.currentRewardOptions || [])[idx];
+  if (!item) return;
+  rewardPicked = true;
+  document.querySelectorAll('#lu-reward-options .reward-option').forEach((el, i) => {
+    el.classList.add('locked');
+    el.classList.toggle('selected', i === idx);
+  });
+  data.selectedRewards.push({ level:data.level, title:item.title, link:item.link, category:item.category, date:new Date().toISOString() });
+  save();
+  toast('✓ جایزه انتخاب شد!');
+  if (safeUrl(item.link) !== '#') window.open(item.link, '_blank', 'noopener');
+}
+
+function allocateStat(stat) {
+  if (data.statPoints <= 0) return;
+  data.stats[stat].value++;
+  data.statPoints--;
+  save(); render();
+  $('lu-points').textContent = data.statPoints;
+  toast(`+1 ${stat} (${STAT_EFFECTS[stat].label})`);
+  if (data.statPoints <= 0) $('levelup-modal').classList.remove('show');
+}
+function skipStatAllocation() { $('levelup-modal').classList.remove('show'); if (data.statPoints > 0) toast('امتیاز را از پروفایل می‌توانی خرج کنی'); }
+
+function openStatModal() { $('stat-modal-points').textContent = data.statPoints; $('stat-modal').classList.add('show'); }
+function closeStatModal() { $('stat-modal').classList.remove('show'); }
+function allocateStatFromProfile(stat) {
+  if (data.statPoints <= 0) return;
+  data.stats[stat].value++;
+  data.statPoints--;
+  save(); render();
+  $('stat-modal-points').textContent = data.statPoints;
+  toast(`+1 ${stat} (${STAT_EFFECTS[stat].label})`);
+  if (data.statPoints <= 0) setTimeout(closeStatModal, 700);
+}
+
+// ============ REMINDERS ============
+function checkMainQuestReminder() {
+  const now = Date.now();
+  if (now - data.lastReminder < 10 * 86400000) return;
+  const old = data.mains.filter(m => !m.done && Math.floor((now - new Date(m.created)) / 86400000) >= 10);
+  if (!old.length) return;
+  $('reminder-text').textContent = `تو ${old.length} ماموریت اصلی داری که بیش از ۱۰ روز از ثبتشون گذشته:\n\n` +
+    old.slice(0, 3).map(m => `• ${m.title}`).join('\n') + (old.length > 3 ? `\n• و ${old.length - 3} ماموریت دیگر...` : '');
+  $('reminder-modal').classList.add('show');
+  data.lastReminder = now;
+  save();
+}
+function closeReminder() { $('reminder-modal').classList.remove('show'); }
+
+// ============ FEED ============
+let feedBusy = false;
+
+function feedEmpty(offline) {
+  return `<div class="empty">${offline ? '📡 اینترنت وصل نیست.<br>این بخش فقط محتوای واقعی از اینترنت نشان می‌دهد؛ با وصل شدن خودکار پر می‌شود.' : '⚠️ هیچ منبعی پاسخ نداد.<br>اتصال را بررسی کن و دوباره امتحان کن.'}<br><button class="btn-add" onclick="refreshFeed()">تلاش دوباره</button></div>`;
+}
+
+async function loadFeed(force = false) {
+  const el = $('dash-feed'), st = $('feed-status');
+  const c = data.feedCache || {};
+  const hasCache = c.items && c.items.length;
+  const fresh = hasCache && Date.now() - c.time < 3600000;
+
+  if (!force && fresh) { renderFeedItems(c.items); st.textContent = `${c.items.length} مورد`; return; }
+  if (!navigator.onLine) {
+    if (hasCache) { renderFeedItems(c.items); st.textContent = 'آفلاین · آخرین محتوای دریافت‌شده'; }
+    else { el.innerHTML = feedEmpty(true); st.textContent = 'آفلاین'; }
+    return;
+  }
+  if (feedBusy) return;
+  feedBusy = true;
+  if (!hasCache || force) el.innerHTML = '<div class="feed-loading">در حال بارگذاری...</div>';
+  try {
+    const items = await fetchFromSources(6);
+    if (!items.length) throw new Error('empty');
+    data.feedCache = { items, time: Date.now() };
+    save();
+    renderFeedItems(items);
+    st.textContent = `${items.length} مورد`;
+  } catch (e) {
+    if (hasCache) { renderFeedItems(c.items); st.textContent = 'به‌روزرسانی نشد · محتوای قبلی'; }
+    else { el.innerHTML = feedEmpty(false); st.textContent = 'خطا'; }
+  } finally { feedBusy = false; }
+}
+
+function renderFeedItems(items) {
+  $('dash-feed').innerHTML = `<div class="feed-grid">${items.map(i => {
+    const link = safeUrl(i.link), a = link !== '#', dir = i.lang === 'fa' ? 'rtl' : 'ltr';
+    const open = a ? `a href="${esc(link)}" target="_blank" rel="noopener noreferrer"` : 'div';
+    return `<${open} class="feed-item">
+      <div class="feed-source">${i.sourceIcon || ''} ${esc(i.category || '')} · ${esc(i.source || '')}</div>
+      <div class="feed-title" dir="${dir}">${esc(i.title)}</div>
+      <div class="feed-desc" dir="${dir}">${esc(i.desc)}</div>
+    </${a ? 'a' : 'div'}>`;
+  }).join('')}</div>`;
+}
+
+async function refreshFeed(btn) {
+  if (btn) btn.classList.add('loading');
+  await loadFeed(true);
+  if (btn) btn.classList.remove('loading');
+}
+async function refreshRewards(btn) {
+  btn.classList.add('loading');
+  await loadRewardOptions();
+  btn.classList.remove('loading');
+}
+
+// ============ EFFECTS ============
+let toastTimer;
+function toast(msg, type = '') {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = 'toast', 2500);
+}
+
+function popFloat(txt, neg) {
+  const e = document.createElement('div');
+  e.className = 'float-xp' + (neg ? ' neg' : '');
+  e.textContent = txt + ' XP';
+  e.style.left = lastPt.x + 'px';
+  e.style.top = lastPt.y + 'px';
+  document.body.appendChild(e);
+  setTimeout(() => e.remove(), 1200);
+}
+
+function confetti() {
+  const colors = ['#00e5ff', '#b14aed', '#ffb000', '#23d160', '#ff3860'];
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement('i');
+    p.className = 'confetti';
+    p.style.cssText = `left:${Math.random() * 100}vw;background:${colors[i % 5]};animation-delay:${Math.random() * .5}s;animation-duration:${1.8 + Math.random() * 1.4}s`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+}
+
+// ============ EVENTS ============
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  $('view-' + t.dataset.view).classList.add('active');
+  if (t.dataset.view === 'home') loadFeed();
+}));
+
+document.addEventListener('click', e => { lastPt = { x:e.clientX, y:e.clientY }; }, true);
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('mousedown', e => { if (e.target === m) m.classList.remove('show'); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal.show').forEach(m => m.classList.remove('show')); });
+$('m-title').addEventListener('keydown', e => { if (e.key === 'Enter') saveQuest(); });
+$('note-input').addEventListener('keydown', e => { if (e.key === 'Enter') addNote(); });
+
+function rolloverIfNeeded() { if (dayNum() !== data.lastDate) { checkDay(); render(); } }
+document.addEventListener('visibilitychange', () => { if (!document.hidden) rolloverIfNeeded(); });
+window.addEventListener('online', () => loadFeed(true));
+window.addEventListener('offline', () => loadFeed());
+setInterval(rolloverIfNeeded, 60000);
+
+// ============ INIT ============
+initDefaults();
+checkDay();
+render();
+loadFeed();
+checkMainQuestReminder();
+</script>
+</body>
+</html>
