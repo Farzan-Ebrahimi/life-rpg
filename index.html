@@ -26,6 +26,9 @@ button{font-family:inherit}
 .header-main{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .logo{font-size:14px;font-weight:700;letter-spacing:4px;direction:ltr}
 .logo span{color:var(--accent)}
+.header-right{display:flex;align-items:center;gap:14px}
+.lang-btn{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:5px 11px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;transition:all .2s;min-width:40px}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent)}
 .header-level{display:flex;align-items:center;gap:14px}
 .level-num{font-size:22px;font-weight:800;color:var(--accent);font-family:'Courier New',monospace;direction:ltr}
 .xp-mini{display:flex;flex-direction:column;gap:4px;min-width:140px}
@@ -217,7 +220,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
 .reward-section{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;margin:14px 0}
 .reward-title{font-size:12px;color:var(--text-dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 .reward-options{display:grid;gap:10px}
-.reward-option{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s}
+.reward-option{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s;display:flex;gap:12px;align-items:flex-start}
+.reward-thumb{width:64px;height:90px;object-fit:cover;border-radius:6px;flex-shrink:0;background:var(--surface-2)}
+.reward-body{flex:1;min-width:0}
+.reward-hint{font-size:11px;color:var(--text-muted);line-height:1.7;margin-bottom:10px}
+.reward-option-sub{font-size:11px;color:var(--accent-2);margin-bottom:4px}
 .reward-option:hover{border-color:var(--accent)}
 .reward-option.selected{border-color:var(--success);background:rgba(35,209,96,.06)}
 .reward-option.locked:not(.selected){opacity:.4;pointer-events:none}
@@ -246,60 +253,63 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
 <header class="header">
   <div class="header-main">
     <div class="logo">LIFE<span>//</span>SYSTEM</div>
-    <div class="header-level">
-      <div class="level-num" id="hdr-level">LVL 1</div>
-      <div class="xp-mini">
-        <div class="xp-mini-text"><span id="hdr-xp-cur">0</span> / <span id="hdr-xp-max">100</span> XP</div>
-        <div class="xp-mini-bar"><div class="xp-mini-fill" id="hdr-xp-fill" style="width:0%"></div></div>
+    <div class="header-right">
+      <button class="lang-btn" id="lang-btn" onclick="toggleLang()" type="button">EN</button>
+      <div class="header-level">
+        <div class="level-num" id="hdr-level">LVL 1</div>
+        <div class="xp-mini">
+          <div class="xp-mini-text"><span id="hdr-xp-cur">0</span> / <span id="hdr-xp-max">100</span> XP</div>
+          <div class="xp-mini-bar"><div class="xp-mini-fill" id="hdr-xp-fill" style="width:0%"></div></div>
+        </div>
       </div>
     </div>
   </div>
   <nav class="tabs">
-    <button class="tab active" data-view="home">خانه</button>
-    <button class="tab" data-view="quests">ماموریت‌ها</button>
-    <button class="tab" data-view="notes">یادداشت‌ها</button>
-    <button class="tab" data-view="profile">پروفایل</button>
+    <button class="tab active" data-view="home" data-i18n="tab_home">خانه</button>
+    <button class="tab" data-view="quests" data-i18n="tab_quests">ماموریت‌ها</button>
+    <button class="tab" data-view="notes" data-i18n="tab_notes">یادداشت‌ها</button>
+    <button class="tab" data-view="profile" data-i18n="tab_profile">پروفایل</button>
   </nav>
 </header>
 
 <main>
   <section class="view active" id="view-home">
-    <div class="view-title">نمای کلی</div>
+    <div class="view-title" data-i18n="title_overview">نمای کلی</div>
     <div class="dash-grid">
       <div class="dash-hero">
         <div class="dash-hero-top">
           <div>
-            <div class="dash-hero-label">سطح فعلی</div>
+            <div class="dash-hero-label" data-i18n="current_level">سطح فعلی</div>
             <div class="dash-hero-level" id="dash-level">1</div>
           </div>
           <div class="dash-rank" id="dash-rank"></div>
         </div>
         <div class="dash-hero-sub" id="dash-sub"></div>
         <div class="dash-hero-bar"><div class="dash-hero-fill" id="dash-xp-fill" style="width:0%"></div></div>
-        <div class="dash-hero-xp"><span id="dash-xp-cur">0</span> از <span id="dash-xp-max">100</span> XP تا سطح بعدی</div>
+        <div class="dash-hero-xp" data-i18n-html="xp_to_next"><span id="dash-xp-cur">0</span> از <span id="dash-xp-max">100</span> XP تا سطح بعدی</div>
         <div class="dash-daily">
-          <div class="dash-daily-top"><span>عادت‌های امروز</span><span id="dash-daily-text">0/0</span></div>
+          <div class="dash-daily-top"><span data-i18n="habits_today">عادت‌های امروز</span><span id="dash-daily-text">0/0</span></div>
           <div class="dash-daily-bar"><div id="dash-daily-fill"></div></div>
         </div>
       </div>
       <div class="dash-stats">
-        <div class="dash-stat"><div class="dash-stat-icon xp">⚡</div><div><div class="dash-stat-label">XP امروز</div><div class="dash-stat-value" id="dash-today">0</div></div></div>
-        <div class="dash-stat"><div class="dash-stat-icon streak">🔥</div><div><div class="dash-stat-label">روزهای متوالی</div><div class="dash-stat-value" id="dash-streak">0</div></div></div>
-        <div class="dash-stat"><div class="dash-stat-icon done">✓</div><div><div class="dash-stat-label">ماموریت تکمیل‌شده</div><div class="dash-stat-value" id="dash-done">0</div></div></div>
+        <div class="dash-stat"><div class="dash-stat-icon xp">⚡</div><div><div class="dash-stat-label" data-i18n="stat_xp_today">XP امروز</div><div class="dash-stat-value" id="dash-today">0</div></div></div>
+        <div class="dash-stat"><div class="dash-stat-icon streak">🔥</div><div><div class="dash-stat-label" data-i18n="stat_streak">روزهای متوالی</div><div class="dash-stat-value" id="dash-streak">0</div></div></div>
+        <div class="dash-stat"><div class="dash-stat-icon done">✓</div><div><div class="dash-stat-label" data-i18n="stat_done">ماموریت تکمیل‌شده</div><div class="dash-stat-value" id="dash-done">0</div></div></div>
       </div>
     </div>
 
     <div class="section" id="dashboard-note-section" style="display:none">
       <div class="section-head">
-        <div class="section-title">💡 یادآوری</div>
-        <button class="refresh-btn" onclick="renderRandomNote()" title="نکته بعدی">↻</button>
+        <div class="section-title" data-i18n="note_title">💡 یادآوری</div>
+        <button class="refresh-btn" onclick="renderRandomNote()" data-i18n-title="next_note" title="نکته بعدی">↻</button>
       </div>
       <div style="font-size:14px; line-height:1.8; color:var(--text); padding:10px 0; font-weight:500;" id="dashboard-random-note"></div>
     </div>
 
     <div class="section">
       <div class="section-head">
-        <div class="section-title">روزانه‌های پین‌شده</div>
+        <div class="section-title" data-i18n="pinned_title">روزانه‌های پین‌شده</div>
         <div class="section-count" id="dash-pinned-count">0</div>
       </div>
       <div class="today-grid" id="dash-pinned-habits"></div>
@@ -308,36 +318,36 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
     <div class="section">
       <div class="section-head">
         <div style="display:flex;align-items:center">
-          <div class="section-title">الهام‌بخش</div>
-          <button class="refresh-btn" onclick="refreshFeed(this)" title="بارگذاری مجدد" aria-label="بارگذاری مجدد">↻</button>
+          <div class="section-title" data-i18n="inspiration">الهام‌بخش</div>
+          <button class="refresh-btn" onclick="refreshFeed(this)" data-i18n-title="reload" title="بارگذاری مجدد">↻</button>
         </div>
         <div class="section-count" id="feed-status"></div>
       </div>
-      <div id="dash-feed"><div class="feed-loading">در حال بارگذاری...</div></div>
+      <div id="dash-feed"><div class="feed-loading" data-i18n="loading">در حال بارگذاری...</div></div>
     </div>
   </section>
 
   <section class="view" id="view-quests">
-    <div class="view-title">ماموریت‌ها</div>
+    <div class="view-title" data-i18n="title_quests">ماموریت‌ها</div>
     <div class="quest-sections">
       <div class="quest-section">
         <div class="quest-section-head">
-          <div class="quest-section-title"><div class="quest-section-icon daily">↻</div><div><div class="quest-section-name">روزانه</div><div class="quest-section-count" id="daily-count"></div></div></div>
-          <button class="btn-add" onclick="openAddModal('daily')">+ افزودن</button>
+          <div class="quest-section-title"><div class="quest-section-icon daily">↻</div><div><div class="quest-section-name" data-i18n="q_daily">روزانه</div><div class="quest-section-count" id="daily-count"></div></div></div>
+          <button class="btn-add" onclick="openAddModal('daily')" data-i18n="add_btn">+ افزودن</button>
         </div>
         <div id="daily-list"></div>
       </div>
       <div class="quest-section">
         <div class="quest-section-head">
-          <div class="quest-section-title"><div class="quest-section-icon main">◆</div><div><div class="quest-section-name">اصلی</div><div class="quest-section-count" id="main-count"></div></div></div>
-          <button class="btn-add" onclick="openAddModal('main')">+ افزودن</button>
+          <div class="quest-section-title"><div class="quest-section-icon main">◆</div><div><div class="quest-section-name" data-i18n="q_main">اصلی</div><div class="quest-section-count" id="main-count"></div></div></div>
+          <button class="btn-add" onclick="openAddModal('main')" data-i18n="add_btn">+ افزودن</button>
         </div>
         <div id="main-list"></div>
       </div>
       <div class="quest-section">
         <div class="quest-section-head">
-          <div class="quest-section-title"><div class="quest-section-icon side">◇</div><div><div class="quest-section-name">فرعی</div><div class="quest-section-count" id="side-count"></div></div></div>
-          <button class="btn-add" onclick="openAddModal('side')">+ افزودن</button>
+          <div class="quest-section-title"><div class="quest-section-icon side">◇</div><div><div class="quest-section-name" data-i18n="q_side">فرعی</div><div class="quest-section-count" id="side-count"></div></div></div>
+          <button class="btn-add" onclick="openAddModal('side')" data-i18n="add_btn">+ افزودن</button>
         </div>
         <div id="side-list"></div>
       </div>
@@ -345,39 +355,39 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
   </section>
 
   <section class="view" id="view-notes">
-    <div class="view-title">یادداشت‌های مهم</div>
+    <div class="view-title" data-i18n="notes_page_title">یادداشت‌های مهم</div>
     <div class="section">
       <div class="section-head">
-        <div class="section-title">افزودن یادداشت جدید</div>
+        <div class="section-title" data-i18n="add_note_title">افزودن یادداشت جدید</div>
       </div>
       <div style="display:flex; gap:10px;">
-        <input type="text" id="note-input" maxlength="150" placeholder="یک نکته کوتاه و مهم بنویس..." style="flex:1">
-        <button class="btn btn-primary" onclick="addNote()" style="flex:0; padding:10px 20px;">افزودن</button>
+        <input type="text" id="note-input" maxlength="150" data-i18n-ph="note_ph" placeholder="یک نکته کوتاه و مهم بنویس..." style="flex:1">
+        <button class="btn btn-primary" onclick="addNote()" style="flex:0; padding:10px 20px;" data-i18n="add">افزودن</button>
       </div>
     </div>
     <div class="section">
       <div class="section-head">
-        <div class="section-title">لیست یادداشت‌ها</div>
-        <div class="section-count" id="notes-count">0 مورد</div>
+        <div class="section-title" data-i18n="notes_list">لیست یادداشت‌ها</div>
+        <div class="section-count" id="notes-count">0</div>
       </div>
       <div id="notes-list"></div>
     </div>
   </section>
 
   <section class="view" id="view-profile">
-    <div class="view-title">پروفایل</div>
+    <div class="view-title" data-i18n="profile_title">پروفایل</div>
     <div id="stat-points-banner-wrap"></div>
     <div class="prof-grid">
-      <div class="prof-card"><div class="prof-card-title">سطح</div><div class="prof-big" id="prof-level">1</div><div class="prof-sub" id="prof-xp-sub"></div></div>
-      <div class="prof-card"><div class="prof-card-title">ماموریت‌ها</div><div class="prof-big" id="prof-quests">0</div><div class="prof-sub">تکمیل شده</div></div>
-      <div class="prof-card"><div class="prof-card-title">امتیاز ویژگی</div><div class="prof-big" id="prof-stat-points">0</div><div class="prof-sub">اختصاص‌نشده</div></div>
+      <div class="prof-card"><div class="prof-card-title" data-i18n="p_level">سطح</div><div class="prof-big" id="prof-level">1</div><div class="prof-sub" id="prof-xp-sub"></div></div>
+      <div class="prof-card"><div class="prof-card-title" data-i18n="p_quests">ماموریت‌ها</div><div class="prof-big" id="prof-quests">0</div><div class="prof-sub" data-i18n="p_completed">تکمیل شده</div></div>
+      <div class="prof-card"><div class="prof-card-title" data-i18n="p_points">امتیاز ویژگی</div><div class="prof-big" id="prof-stat-points">0</div><div class="prof-sub" data-i18n="p_unassigned">اختصاص‌نشده</div></div>
     </div>
     <div class="prof-card" style="margin-bottom:16px">
-      <div class="prof-card-title">آمار کلی</div>
+      <div class="prof-card-title" data-i18n="p_general">آمار کلی</div>
       <div class="prof-list" id="prof-stats-list"></div>
     </div>
     <div class="prof-card">
-      <div class="prof-card-title">ویژگی‌ها و اثرات</div>
+      <div class="prof-card-title" data-i18n="p_attrs">ویژگی‌ها و اثرات</div>
       <div class="stats-grid" id="prof-attr"></div>
     </div>
   </section>
@@ -388,49 +398,49 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
   <div class="modal-box">
     <div class="modal-title" id="modal-title">افزودن ماموریت</div>
     <div class="form-group">
-      <label class="form-label" for="m-title">عنوان</label>
-      <input type="text" id="m-title" maxlength="80" placeholder="مثلاً: ورزش صبحگاهی">
+      <label class="form-label" for="m-title" data-i18n="f_title">عنوان</label>
+      <input type="text" id="m-title" maxlength="80" data-i18n-ph="f_title_ph" placeholder="مثلاً: ورزش صبحگاهی">
     </div>
     <div id="m-daily-fields" style="display:none">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label" for="m-category">دسته‌بندی</label>
+          <label class="form-label" for="m-category" data-i18n="f_category">دسته‌بندی</label>
           <select id="m-category">
-            <option value="general">عمومی</option><option value="nutrition">تغذیه</option><option value="fitness">ورزشی</option>
-            <option value="personal">شخصی</option><option value="work">کاری</option><option value="learning">یادگیری</option>
+            <option value="general" data-i18n="cat_general">عمومی</option><option value="nutrition" data-i18n="cat_nutrition">تغذیه</option><option value="fitness" data-i18n="cat_fitness">ورزشی</option>
+            <option value="personal" data-i18n="cat_personal">شخصی</option><option value="work" data-i18n="cat_work">کاری</option><option value="learning" data-i18n="cat_learning">یادگیری</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label" for="m-frequency">تکرار</label>
+          <label class="form-label" for="m-frequency" data-i18n="f_freq">تکرار</label>
           <select id="m-frequency">
-            <option value="daily">هر روز</option><option value="every2">یک روز در میان</option>
-            <option value="every3">هر سه روز</option><option value="weekly">هفتگی</option>
+            <option value="daily" data-i18n="freq_daily">هر روز</option><option value="every2" data-i18n="freq_every2">یک روز در میان</option>
+            <option value="every3" data-i18n="freq_every3">هر سه روز</option><option value="weekly" data-i18n="freq_weekly">هفتگی</option>
           </select>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label" for="m-target">هدف روزانه (تعداد)</label>
+        <label class="form-label" for="m-target" data-i18n="f_target">هدف روزانه (تعداد)</label>
         <input type="number" id="m-target" value="1" min="1" max="20">
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">💡 اگر ۱ باشد تیک‌زدنی است، اگر بیشتر باشد شمارنده (+۱ / −۱)</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px" data-i18n="f_target_hint">💡 اگر ۱ باشد تیک‌زدنی است، اگر بیشتر باشد شمارنده (+۱ / −۱)</div>
       </div>
       <div class="form-group">
-        <div class="checkbox-row"><input type="checkbox" id="m-important"><label for="m-important">مهم (انجام ندادن = جریمه XP)</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="m-important"><label for="m-important" data-i18n="f_important">مهم (انجام ندادن = جریمه XP)</label></div>
       </div>
-      <div class="note-box">📌 پاداش ثابت: <strong>۵ XP</strong> به ازای هر واحد</div>
+      <div class="note-box" data-i18n-html="reward_daily">📌 پاداش ثابت: <strong>۵ XP</strong> به ازای هر واحد</div>
     </div>
     <div id="m-main-fields" style="display:none">
       <div class="form-group">
-        <label class="form-label" for="m-deadline">مهلت (روز، اختیاری)</label>
-        <input type="number" id="m-deadline" placeholder="بدون مهلت" min="0">
+        <label class="form-label" for="m-deadline" data-i18n="f_deadline">مهلت (روز، اختیاری)</label>
+        <input type="number" id="m-deadline" data-i18n-ph="f_deadline_ph" placeholder="بدون مهلت" min="0">
       </div>
-      <div class="note-box">📌 پاداش ثابت: <strong>۱۰۰ XP</strong></div>
+      <div class="note-box" data-i18n-html="reward_main">📌 پاداش ثابت: <strong>۱۰۰ XP</strong></div>
     </div>
     <div id="m-side-fields" style="display:none">
-      <div class="note-box">📌 پاداش ثابت: <strong>۳۰ XP</strong></div>
+      <div class="note-box" data-i18n-html="reward_side">📌 پاداش ثابت: <strong>۳۰ XP</strong></div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">انصراف</button>
-      <button class="btn btn-primary" onclick="saveQuest()">افزودن</button>
+      <button class="btn btn-ghost" onclick="closeModal()" data-i18n="cancel">انصراف</button>
+      <button class="btn btn-primary" onclick="saveQuest()" data-i18n="add">افزودن</button>
     </div>
   </div>
 </div>
@@ -439,80 +449,224 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
 <div class="modal" id="levelup-modal">
   <div class="modal-box">
     <div class="levelup-hero">
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">ارتقاء سطح</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px" data-i18n="lu_title">ارتقاء سطح</div>
       <div class="levelup-level" id="lu-level">2</div>
       <div class="levelup-rank" id="lu-rank"></div>
-      <div class="levelup-sub">تبریک! یک قدم جلوتری</div>
+      <div class="levelup-sub" data-i18n="lu_congrats">تبریک! یک قدم جلوتری</div>
       <div id="lu-achievement-wrap"></div>
       <div id="lu-unlock-wrap"></div>
     </div>
     <div class="reward-section">
       <div class="reward-title">
-        <span>🎁 جایزه این سطح — یکی را انتخاب کن</span>
-        <button class="refresh-btn" onclick="refreshRewards(this)" title="پیشنهادات جدید" aria-label="پیشنهادات جدید">↻</button>
+        <span data-i18n="lu_reward">🎁 جایزه این سطح — یکی را انتخاب کن</span>
+        <button class="refresh-btn" onclick="refreshRewards(this)" data-i18n-title="lu_new" title="پیشنهادات جدید">↻</button>
       </div>
+      <div class="reward-hint" data-i18n="lu_hint"></div>
       <div class="reward-options" id="lu-reward-options"></div>
     </div>
     <div class="reward-section">
-      <div class="reward-title"><span>⚡ <b id="lu-points">0</b> امتیاز ویژگی داری — کجا خرجش کنی؟</span></div>
+      <div class="reward-title"><span data-i18n-html="lu_points_html">⚡ <b id="lu-points">0</b> امتیاز ویژگی داری — کجا خرجش کنی؟</span></div>
       <div class="stat-alloc-grid" style="margin:0">
-        <button class="stat-alloc-btn" onclick="allocateStat('STR')"><div class="stat-alloc-icon">⚔️</div><div class="stat-alloc-name">STR</div><div class="stat-alloc-label">قدرت</div></button>
-        <button class="stat-alloc-btn" onclick="allocateStat('INT')"><div class="stat-alloc-icon">🧠</div><div class="stat-alloc-name">INT</div><div class="stat-alloc-label">هوش</div></button>
-        <button class="stat-alloc-btn" onclick="allocateStat('DIS')"><div class="stat-alloc-icon">📏</div><div class="stat-alloc-name">DIS</div><div class="stat-alloc-label">نظم</div></button>
-        <button class="stat-alloc-btn" onclick="allocateStat('CHA')"><div class="stat-alloc-icon">💬</div><div class="stat-alloc-name">CHA</div><div class="stat-alloc-label">کاریزما</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('STR')"><div class="stat-alloc-icon">⚔️</div><div class="stat-alloc-name">STR</div><div class="stat-alloc-label" data-i18n="s_STR">قدرت</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('INT')"><div class="stat-alloc-icon">🧠</div><div class="stat-alloc-name">INT</div><div class="stat-alloc-label" data-i18n="s_INT">هوش</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('DIS')"><div class="stat-alloc-icon">📏</div><div class="stat-alloc-name">DIS</div><div class="stat-alloc-label" data-i18n="s_DIS">نظم</div></button>
+        <button class="stat-alloc-btn" onclick="allocateStat('CHA')"><div class="stat-alloc-icon">💬</div><div class="stat-alloc-name">CHA</div><div class="stat-alloc-label" data-i18n="s_CHA">کاریزما</div></button>
       </div>
     </div>
-    <button class="btn btn-ghost" style="width:100%" onclick="skipStatAllocation()">بعداً اختصاص می‌دم</button>
+    <button class="btn btn-ghost" style="width:100%" onclick="skipStatAllocation()" data-i18n="lu_later">بعداً اختصاص می‌دم</button>
   </div>
 </div>
 
 <!-- STAT MODAL -->
 <div class="modal" id="stat-modal">
   <div class="modal-box">
-    <div class="modal-title">اختصاص امتیاز ویژگی</div>
-    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px">امتیازهای موجود: <strong style="color:var(--warning)" id="stat-modal-points">0</strong></div>
+    <div class="modal-title" data-i18n="sm_title">اختصاص امتیاز ویژگی</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px" data-i18n-html="sm_avail_html">امتیازهای موجود: <strong style="color:var(--warning)" id="stat-modal-points">0</strong></div>
     <div class="stat-alloc-grid">
-      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('STR')"><div class="stat-alloc-icon">⚔️</div><div class="stat-alloc-name">STR</div><div class="stat-alloc-label">قدرت</div></button>
-      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('INT')"><div class="stat-alloc-icon">🧠</div><div class="stat-alloc-name">INT</div><div class="stat-alloc-label">هوش</div></button>
-      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('DIS')"><div class="stat-alloc-icon">📏</div><div class="stat-alloc-name">DIS</div><div class="stat-alloc-label">نظم</div></button>
-      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('CHA')"><div class="stat-alloc-icon">💬</div><div class="stat-alloc-name">CHA</div><div class="stat-alloc-label">کاریزما</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('STR')"><div class="stat-alloc-icon">⚔️</div><div class="stat-alloc-name">STR</div><div class="stat-alloc-label" data-i18n="s_STR">قدرت</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('INT')"><div class="stat-alloc-icon">🧠</div><div class="stat-alloc-name">INT</div><div class="stat-alloc-label" data-i18n="s_INT">هوش</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('DIS')"><div class="stat-alloc-icon">📏</div><div class="stat-alloc-name">DIS</div><div class="stat-alloc-label" data-i18n="s_DIS">نظم</div></button>
+      <button class="stat-alloc-btn" onclick="allocateStatFromProfile('CHA')"><div class="stat-alloc-icon">💬</div><div class="stat-alloc-name">CHA</div><div class="stat-alloc-label" data-i18n="s_CHA">کاریزما</div></button>
     </div>
-    <button class="btn btn-ghost" style="width:100%" onclick="closeStatModal()">بستن</button>
+    <button class="btn btn-ghost" style="width:100%" onclick="closeStatModal()" data-i18n="close">بستن</button>
   </div>
 </div>
 
 <!-- REMINDER MODAL -->
 <div class="modal" id="reminder-modal">
   <div class="modal-box">
-    <div class="modal-title">⚠️ یادآوری</div>
+    <div class="modal-title" data-i18n="rm_title">⚠️ یادآوری</div>
     <div style="font-size:13px;color:var(--text-dim);line-height:1.9;margin-bottom:20px;white-space:pre-line" id="reminder-text"></div>
-    <button class="btn btn-primary" style="width:100%" onclick="closeReminder()">متوجه شدم</button>
+    <button class="btn btn-primary" style="width:100%" onclick="closeReminder()" data-i18n="rm_ok">متوجه شدم</button>
   </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+// ============ I18N ============
+const LANG_KEY = 'lifeSystem_lang';
+const I18N = {
+  fa: {
+    doc_title:'LIFE // سیستم پیشرفت',
+    tab_home:'خانه', tab_quests:'ماموریت‌ها', tab_notes:'یادداشت‌ها', tab_profile:'پروفایل',
+    title_overview:'نمای کلی', current_level:'سطح فعلی',
+    xp_to_next:'<span id="dash-xp-cur">0</span> از <span id="dash-xp-max">100</span> XP تا سطح بعدی',
+    habits_today:'عادت‌های امروز', stat_xp_today:'XP امروز', stat_streak:'روزهای متوالی', stat_done:'ماموریت تکمیل‌شده',
+    note_title:'💡 یادآوری', next_note:'نکته بعدی', pinned_title:'روزانه‌های پین‌شده',
+    inspiration:'الهام‌بخش', reload:'بارگذاری مجدد', loading:'در حال بارگذاری...',
+    title_quests:'ماموریت‌ها', q_daily:'روزانه', q_main:'اصلی', q_side:'فرعی', add_btn:'+ افزودن',
+    notes_page_title:'یادداشت‌های مهم', add_note_title:'افزودن یادداشت جدید',
+    note_ph:'یک نکته کوتاه و مهم بنویس...', add:'افزودن', notes_list:'لیست یادداشت‌ها', notes_count:'{n} مورد',
+    profile_title:'پروفایل', p_level:'سطح', p_quests:'ماموریت‌ها', p_completed:'تکمیل شده',
+    p_points:'امتیاز ویژگی', p_unassigned:'اختصاص‌نشده', p_general:'آمار کلی', p_attrs:'ویژگی‌ها و اثرات',
+    xp_earned:'{n} XP کسب شده',
+    add_quest_title:'افزودن ماموریت', add_daily_title:'افزودن عادت روزانه', add_main_title:'افزودن ماموریت اصلی', add_side_title:'افزودن ماموریت فرعی',
+    f_title:'عنوان', f_title_ph:'مثلاً: ورزش صبحگاهی', f_category:'دسته‌بندی', f_freq:'تکرار',
+    cat_general:'عمومی', cat_nutrition:'تغذیه', cat_fitness:'ورزشی', cat_personal:'شخصی', cat_work:'کاری', cat_learning:'یادگیری',
+    freq_daily:'هر روز', freq_every2:'یک روز در میان', freq_every3:'هر سه روز', freq_weekly:'هفتگی',
+    f_target:'هدف روزانه (تعداد)', f_target_hint:'💡 اگر ۱ باشد تیک‌زدنی است، اگر بیشتر باشد شمارنده (+۱ / −۱)',
+    f_important:'مهم (انجام ندادن = جریمه XP)',
+    reward_daily:'📌 پاداش ثابت: <strong>۵ XP</strong> به ازای هر واحد',
+    reward_main:'📌 پاداش ثابت: <strong>۱۰۰ XP</strong>', reward_side:'📌 پاداش ثابت: <strong>۳۰ XP</strong>',
+    f_deadline:'مهلت (روز، اختیاری)', f_deadline_ph:'بدون مهلت', cancel:'انصراف',
+    lu_title:'ارتقاء سطح', lu_congrats:'تبریک! یک قدم جلوتری', lu_reward:'🎁 جایزه این سطح — یک سرگرمی انتخاب کن',
+    r_movie:'🎬 فیلم', r_show:'📺 سریال', r_music:'🎵 موسیقی', r_book:'📚 کتاب', r_game:'🎮 بازی',
+    lu_hint:'سه پیشنهاد سرگرمی تصادفی از اینترنت. با انتخاب هر کدام لینکش باز می‌شود؛ ↻ سه پیشنهاد تازه می‌آورد.',
+    lu_new:'پیشنهادات جدید', lu_points_html:'⚡ <b id="lu-points">0</b> امتیاز ویژگی داری — کجا خرجش کنی؟',
+    lu_later:'بعداً اختصاص می‌دم',
+    s_STR:'قدرت', s_INT:'هوش', s_DIS:'نظم', s_CHA:'کاریزما',
+    sm_title:'اختصاص امتیاز ویژگی', sm_avail_html:'امتیازهای موجود: <strong style="color:var(--warning)" id="stat-modal-points">0</strong>', close:'بستن',
+    rm_title:'⚠️ یادآوری', rm_ok:'متوجه شدم',
+    lang_btn:'EN', lang_title:'Switch to English',
+    habit_water:'💧 آب خوردن', habit_sleep:'🌙 خواب به موقع',
+    se_none:'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)',
+    se_STR:'+{n}% XP از عادت‌های ورزشی', se_INT:'+{n}% XP از عادت‌های یادگیری', se_DIS:'-{n}% جریمه‌ها', se_CHA:'+{n}% پاداش توالی روزها',
+    next_rank:'{n} سطح تا لقب «{name}»', max_rank:'به بالاترین لقب رسیدی',
+    empty_pinned:'عادت پین‌شده‌ای برای امروز نیست', done_text:'✓ انجام شد', not_done:'انجام نشده',
+    aria_toggle:'تغییر وضعیت', aria_dec:'کم کردن', aria_inc:'اضافه کردن', aria_pin:'پین', aria_del:'حذف',
+    daily_count:'{a} عادت برای امروز · {b} کل', empty_daily:'هنوز عادت روزانه‌ای نداری. اولی را اضافه کن.',
+    open_count:'{n} ماموریت باز', empty_main:'ماموریت اصلی‌ای نیست. یک هدف بزرگ بنویس.', empty_side:'ماموریت فرعی‌ای نیست.',
+    tag_off:'امروز نوبتش نیست', tag_important:'مهم', tag_pinned:'پین', tag_deadline:'مهلت: {d}', tag_overdue:'عقب‌افتاده',
+    points_banner:'🎯 <strong>{n}</strong> امتیاز ویژگی آماده اختصاص است', allocate_btn:'اختصاص بده',
+    row_rank:'لقب', row_total:'کل XP کسب‌شده', row_today:'XP امروز', row_streak:'روزهای متوالی', row_open:'ماموریت‌های باز',
+    empty_notes:'هنوز یادداشتی اضافه نکرده‌ای. نکات مهم را اینجا بنویس تا فراموش نشوند.',
+    note_empty:'متن یادداشت را وارد کن', note_added:'✓ یادداشت اضافه شد', confirm_note:'این یادداشت حذف شود؟',
+    quest_done:'✓ {t} تکمیل شد', quest_done2:'✓ {t} انجام شد', confirm_del:'«{t}» حذف شود؟',
+    pin_removed:'پین برداشته شد', pinned:'پین شد', pin_max:'حداکثر {n} عادت قابل پین است',
+    need_title:'عنوان را وارد کن', added:'✓ اضافه شد',
+    pen_missed:'{n} عادت مهم انجام نشد', pen_inactive:'{n} روز غیرفعال', pen_toast:'⚠️ {why}: -{xp} XP',
+    lu_milestone:'🏅 رسیدن به سطح {n}', lu_newrank:'🎖️ لقب جدید: {r}',
+    rw_offline:'📡 اینترنت وصل نیست؛ جایزه‌ها از اینترنت می‌آیند.<br>وقتی وصل شدی ↻ را بزن.',
+    rw_loading:'در حال بارگذاری پیشنهادات...', rw_none:'فعلاً چیزی دریافت نشد. ↻ را بزن.',
+    rw_err:'خطا در بارگذاری پیشنهادات. ↻ را بزن.', rw_picked:'✓ جایزه انتخاب شد!',
+    stat_plus:'+1 {s} ({l})', stat_later:'امتیاز را از پروفایل می‌توانی خرج کنی',
+    rm_text:'تو {n} ماموریت اصلی داری که بیش از ۱۰ روز از ثبتشون گذشته:', rm_more:'• و {n} ماموریت دیگر...',
+    feed_offline_html:'📡 اینترنت وصل نیست.<br>این بخش فقط محتوای واقعی از اینترنت نشان می‌دهد؛ با وصل شدن خودکار پر می‌شود.',
+    feed_fail_html:'⚠️ هیچ منبعی پاسخ نداد.<br>اتصال را بررسی کن و دوباره امتحان کن.', retry:'تلاش دوباره',
+    feed_n:'{n} مورد', feed_offline_cache:'آفلاین · آخرین محتوای دریافت‌شده', feed_offline:'آفلاین',
+    feed_stale:'به‌روزرسانی نشد · محتوای قبلی', feed_error:'خطا',
+    c_tfa:'⭐ مقاله برگزیده', c_history:'🕰️ تاریخ', c_random:'🎲 تصادفی', c_quote:'💭 نقل قول', c_advice:'💡 توصیه', c_stoic:'🏛️ رواقی', c_space:'🌌 فضا',
+    src_wiki:'ویکی‌پدیا', onthisday:'در چنین روزی — {y}'
+  },
+  en: {
+    doc_title:'LIFE // Progress System',
+    tab_home:'Home', tab_quests:'Quests', tab_notes:'Notes', tab_profile:'Profile',
+    title_overview:'Overview', current_level:'Current level',
+    xp_to_next:'<span id="dash-xp-cur">0</span> of <span id="dash-xp-max">100</span> XP to next level',
+    habits_today:"Today's habits", stat_xp_today:'XP today', stat_streak:'Day streak', stat_done:'Quests completed',
+    note_title:'💡 Reminder', next_note:'Next note', pinned_title:'Pinned dailies',
+    inspiration:'Inspiration', reload:'Reload', loading:'Loading...',
+    title_quests:'Quests', q_daily:'Daily', q_main:'Main', q_side:'Side', add_btn:'+ Add',
+    notes_page_title:'Important notes', add_note_title:'Add a new note',
+    note_ph:'Write a short, important note...', add:'Add', notes_list:'Notes list', notes_count:'{n} items',
+    profile_title:'Profile', p_level:'Level', p_quests:'Quests', p_completed:'Completed',
+    p_points:'Stat points', p_unassigned:'Unassigned', p_general:'Overview', p_attrs:'Attributes & effects',
+    xp_earned:'{n} XP earned',
+    add_quest_title:'Add quest', add_daily_title:'Add daily habit', add_main_title:'Add main quest', add_side_title:'Add side quest',
+    f_title:'Title', f_title_ph:'e.g. Morning workout', f_category:'Category', f_freq:'Repeat',
+    cat_general:'General', cat_nutrition:'Nutrition', cat_fitness:'Fitness', cat_personal:'Personal', cat_work:'Work', cat_learning:'Learning',
+    freq_daily:'Every day', freq_every2:'Every other day', freq_every3:'Every 3 days', freq_weekly:'Weekly',
+    f_target:'Daily target (count)', f_target_hint:"💡 If 1, it's a checkbox; if more, it's a counter (+1 / −1)",
+    f_important:'Important (skipping = XP penalty)',
+    reward_daily:'📌 Fixed reward: <strong>5 XP</strong> per unit',
+    reward_main:'📌 Fixed reward: <strong>100 XP</strong>', reward_side:'📌 Fixed reward: <strong>30 XP</strong>',
+    f_deadline:'Deadline (days, optional)', f_deadline_ph:'No deadline', cancel:'Cancel',
+    lu_title:'Level up', lu_congrats:'Congrats! One step ahead', lu_reward:'🎁 Level reward — pick your treat',
+    r_movie:'🎬 Movie', r_show:'📺 TV show', r_music:'🎵 Music', r_book:'📚 Book', r_game:'🎮 Game',
+    lu_hint:'Three random entertainment picks from the internet. Choosing one opens its link; ↻ rolls three new ones.',
+    lu_new:'New suggestions', lu_points_html:'⚡ You have <b id="lu-points">0</b> stat points — where to spend them?',
+    lu_later:"I'll allocate later",
+    s_STR:'Strength', s_INT:'Intelligence', s_DIS:'Discipline', s_CHA:'Charisma',
+    sm_title:'Allocate stat points', sm_avail_html:'Available points: <strong style="color:var(--warning)" id="stat-modal-points">0</strong>', close:'Close',
+    rm_title:'⚠️ Reminder', rm_ok:'Got it',
+    lang_btn:'فا', lang_title:'تغییر به فارسی',
+    habit_water:'💧 Drink water', habit_sleep:'🌙 Sleep on time',
+    se_none:'Not active yet (every 10 points = one step)',
+    se_STR:'+{n}% XP from fitness habits', se_INT:'+{n}% XP from learning habits', se_DIS:'-{n}% penalties', se_CHA:'+{n}% day-streak bonus',
+    next_rank:'{n} levels to «{name}»', max_rank:"You've reached the top rank",
+    empty_pinned:'No pinned habits for today', done_text:'✓ Done', not_done:'Not done',
+    aria_toggle:'Toggle', aria_dec:'Decrease', aria_inc:'Increase', aria_pin:'Pin', aria_del:'Delete',
+    daily_count:'{a} habits today · {b} total', empty_daily:'No daily habits yet. Add your first one.',
+    open_count:'{n} open quests', empty_main:'No main quests. Write down a big goal.', empty_side:'No side quests.',
+    tag_off:'Not due today', tag_important:'Important', tag_pinned:'Pinned', tag_deadline:'Deadline: {d}', tag_overdue:'Overdue',
+    points_banner:'🎯 <strong>{n}</strong> stat points ready to allocate', allocate_btn:'Allocate',
+    row_rank:'Rank', row_total:'Total XP earned', row_today:'XP today', row_streak:'Day streak', row_open:'Open quests',
+    empty_notes:"No notes yet. Write important things here so you don't forget them.",
+    note_empty:'Enter some note text', note_added:'✓ Note added', confirm_note:'Delete this note?',
+    quest_done:'✓ {t} completed', quest_done2:'✓ {t} done', confirm_del:'Delete "{t}"?',
+    pin_removed:'Unpinned', pinned:'Pinned', pin_max:'You can pin at most {n} habits',
+    need_title:'Enter a title', added:'✓ Added',
+    pen_missed:'{n} important habit(s) missed', pen_inactive:'{n} inactive day(s)', pen_toast:'⚠️ {why}: -{xp} XP',
+    lu_milestone:'🏅 Reached level {n}', lu_newrank:'🎖️ New rank: {r}',
+    rw_offline:"📡 You're offline; rewards come from the internet.<br>Press ↻ once you're connected.",
+    rw_loading:'Loading suggestions...', rw_none:'Nothing received right now. Press ↻.',
+    rw_err:"Couldn't load suggestions. Press ↻.", rw_picked:'✓ Reward picked!',
+    stat_plus:'+1 {s} ({l})', stat_later:'You can spend the points from your profile',
+    rm_text:'You have {n} main quests that are over 10 days old:', rm_more:'• and {n} more...',
+    feed_offline_html:"📡 You're offline.<br>This section only shows real content from the internet; it will fill in automatically once you're connected.",
+    feed_fail_html:'⚠️ No source responded.<br>Check your connection and try again.', retry:'Try again',
+    feed_n:'{n} items', feed_offline_cache:'Offline · last fetched content', feed_offline:'Offline',
+    feed_stale:"Couldn't refresh · previous content", feed_error:'Error',
+    c_tfa:'⭐ Featured article', c_history:'🕰️ History', c_random:'🎲 Random', c_quote:'💭 Quote', c_advice:'💡 Advice', c_stoic:'🏛️ Stoic', c_space:'🌌 Space',
+    src_wiki:'Wikipedia', onthisday:'On this day — {y}'
+  }
+};
+
+let LANG = (function () { try { const l = localStorage.getItem(LANG_KEY); return l === 'en' ? 'en' : 'fa'; } catch (e) { return 'fa'; } })();
+function t(k, v) {
+  let s = (I18N[LANG] && I18N[LANG][k] != null) ? I18N[LANG][k] : (I18N.fa[k] != null ? I18N.fa[k] : k);
+  if (v) for (const x in v) s = s.split('{' + x + '}').join(v[x]);
+  return s;
+}
+
 // ============ CONSTANTS ============
 const STORAGE_KEY = 'lifeSystem_v11';
-const CATEGORIES = { general:'عمومی', nutrition:'تغذیه', fitness:'ورزشی', personal:'شخصی', work:'کاری', learning:'یادگیری' };
-const FREQUENCY = { daily:'هر روز', every2:'یک روز در میان', every3:'هر سه روز', weekly:'هفتگی' };
 const XP_DAILY = 5, XP_MAIN = 100, XP_SIDE = 30, XP_WATER = 1, MAX_PINNED = 8;
 
 const DEFAULT_HABITS = [
   { id:'def-water', title:'💧 آب خوردن', target:8, xpPerUnit:XP_WATER, category:'nutrition', pinned:true, frequency:'daily' },
   { id:'def-sleep', title:'🌙 خواب به موقع', target:1, xpPerUnit:XP_DAILY, category:'personal', pinned:true, frequency:'daily' }
 ];
+// عنوان عادت‌های پیش‌فرض بر اساس زبان نمایش داده می‌شود
+function habitTitle(d) {
+  if (d.id === 'def-water') return t('habit_water');
+  if (d.id === 'def-sleep') return t('habit_sleep');
+  return d.title;
+}
 
-const RANKS = [[1,'تازه‌کار','🌱'],[5,'مبتدی مصمم','⚔️'],[10,'جنگجو','🛡️'],[15,'قهرمان','🏆'],[20,'استاد','👑'],[30,'افسانه','💎'],[40,'اسطوره','🔥'],[50,'فرازمینی','⚡']];
+// [آستانه سطح, لقب فارسی, آیکون, لقب انگلیسی]
+const RANKS = [[1,'تازه‌کار','🌱','Rookie'],[5,'مبتدی مصمم','⚔️','Determined Novice'],[10,'جنگجو','🛡️','Warrior'],[15,'قهرمان','🏆','Champion'],[20,'استاد','👑','Master'],[30,'افسانه','💎','Legend'],[40,'اسطوره','🔥','Mythic'],[50,'فرازمینی','⚡','Transcendent']];
 function rankOf(lvl) { return RANKS.filter(r => lvl >= r[0]).pop(); }
+function rankName(r) { return LANG === 'en' ? r[3] : r[1]; }
 
 const STAT_EFFECTS = {
-  STR: { label:'قدرت', icon:'⚔️', getEffect: v => { const b = Math.floor(v/10)*5; return b>0 ? `+${b}% XP از عادت‌های ورزشی` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } },
-  INT: { label:'هوش', icon:'🧠', getEffect: v => { const b = Math.floor(v/10)*5; return b>0 ? `+${b}% XP از عادت‌های یادگیری` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } },
-  DIS: { label:'نظم', icon:'📏', getEffect: v => { const r = Math.min(80, Math.floor(v/10)*10); return r>0 ? `-${r}% جریمه‌ها` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } },
-  CHA: { label:'کاریزما', icon:'💬', getEffect: v => { const b = Math.floor(v/10)*10; return b>0 ? `+${b}% پاداش توالی روزها` : 'هنوز اثر فعالی ندارد (هر ۱۰ امتیاز یک پله)'; } }
+  STR: { icon:'⚔️', getEffect: v => { const b = Math.floor(v/10)*5; return b>0 ? t('se_STR', {n:b}) : t('se_none'); } },
+  INT: { icon:'🧠', getEffect: v => { const b = Math.floor(v/10)*5; return b>0 ? t('se_INT', {n:b}) : t('se_none'); } },
+  DIS: { icon:'📏', getEffect: v => { const r = Math.min(80, Math.floor(v/10)*10); return r>0 ? t('se_DIS', {n:r}) : t('se_none'); } },
+  CHA: { icon:'💬', getEffect: v => { const b = Math.floor(v/10)*10; return b>0 ? t('se_CHA', {n:b}) : t('se_none'); } }
 };
+function statLabel(k) { return t('s_' + k); }
 
 const defaultData = {
   level:1, totalXP:0, xpInLevel:0, todayXP:0, streak:0, lastDate:0, lastActiveDate:0,
@@ -575,6 +729,32 @@ function habitActiveOnDay(d, dn) {
 }
 function isHabitActiveToday(d) { return habitActiveOnDay(d, dayNum()); }
 
+// ============ LANGUAGE ============
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'fa' ? 'rtl' : 'ltr';
+  document.title = t('doc_title');
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { const v = t(el.dataset.i18nTitle); el.title = v; el.setAttribute('aria-label', v); });
+  $('lang-btn').textContent = t('lang_btn');
+  $('lang-btn').title = t('lang_title');
+  $('lu-points').textContent = data.statPoints;
+  $('stat-modal-points').textContent = data.statPoints;
+  if ($('add-modal').classList.contains('show')) setModalTitle();
+}
+
+function toggleLang() { setLang(LANG === 'fa' ? 'en' : 'fa'); }
+function setLang(l) {
+  LANG = l;
+  try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+  applyLang();
+  render();
+  if ($('levelup-modal').classList.contains('show')) { showLevelUpTexts(); if ((window.currentRewardOptions || []).length) renderRewardOptions(); }
+  loadFeed();
+}
+
 // ============ DAY ROLLOVER ============
 function checkDay() {
   const today = dayNum();
@@ -598,10 +778,12 @@ function checkDay() {
     data.todayXP = 0;
     recalcLevel();
     if (total > 0) {
-      const why = [];
-      if (count) why.push(`${count} عادت مهم انجام نشد`);
-      if (gap >= 2) why.push(`${gap - 1} روز غیرفعال`);
-      setTimeout(() => toast(`⚠️ ${why.join(' + ')}: -${total} XP`, 'penalty'), 400);
+      setTimeout(() => {
+        const why = [];
+        if (count) why.push(t('pen_missed', {n:count}));
+        if (gap >= 2) why.push(t('pen_inactive', {n:gap - 1}));
+        toast(t('pen_toast', {why:why.join(' + '), xp:total}), 'penalty');
+      }, 400);
     }
   }
   data.lastDate = today;
@@ -657,10 +839,10 @@ function initDefaults() {
 
 // ============ NOTES ============
 function renderNotes() {
-  $('notes-count').textContent = `${data.notes.length} مورد`;
+  $('notes-count').textContent = t('notes_count', {n:data.notes.length});
   const list = $('notes-list');
   if (data.notes.length === 0) {
-    list.innerHTML = '<div class="empty">هنوز یادداشتی اضافه نکرده‌ای. نکات مهم را اینجا بنویس تا فراموش نشوند.</div>';
+    list.innerHTML = `<div class="empty">${t('empty_notes')}</div>`;
     return;
   }
   list.innerHTML = data.notes.map((note, idx) => `
@@ -669,7 +851,7 @@ function renderNotes() {
         <div class="quest-title" style="line-height:1.6">${esc(note)}</div>
       </div>
       <div class="quest-actions">
-        <button class="btn-icon delete" onclick="deleteNote(${idx})" aria-label="حذف">×</button>
+        <button class="btn-icon delete" onclick="deleteNote(${idx})" aria-label="${t('aria_del')}">×</button>
       </div>
     </div>
   `).join('');
@@ -678,17 +860,17 @@ function renderNotes() {
 function addNote() {
   const input = $('note-input');
   const text = input.value.trim();
-  if (!text) { toast('متن یادداشت را وارد کن', 'penalty'); return; }
+  if (!text) { toast(t('note_empty'), 'penalty'); return; }
   data.notes.push(text);
   input.value = '';
   save();
   renderNotes();
   renderRandomNote();
-  toast('✓ یادداشت اضافه شد');
+  toast(t('note_added'));
 }
 
 function deleteNote(idx) {
-  if (!confirm('این یادداشت حذف شود؟')) return;
+  if (!confirm(t('confirm_note'))) return;
   data.notes.splice(idx, 1);
   save();
   renderNotes();
@@ -710,19 +892,21 @@ function renderRandomNote() {
 // ============ INSPIRATION ============
 async function getJSON(url, ms = 8000) {
   const c = new AbortController();
-  const t = setTimeout(() => c.abort(), ms);
+  const tm = setTimeout(() => c.abort(), ms);
   try {
     const r = await fetch(url, { signal: c.signal });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
-  } finally { clearTimeout(t); }
+  } finally { clearTimeout(tm); }
 }
 
-function wikiItem(a, category) {
+function wikiBase() { return `https://${LANG}.wikipedia.org/api/rest_v1`; }
+
+function wikiItem(a, cat) {
   if (!a || !a.titles) return null;
   const desc = (a.description || a.extract || '').slice(0, 170);
   if (!desc) return null;
-  return { title:a.titles.normalized, desc, link:a.content_urls?.desktop?.page || '#', category, source:'ویکی‌پدیا', lang:'fa' };
+  return { title:a.titles.normalized, desc, link:a.content_urls?.desktop?.page || '#', cat, srcKey:'src_wiki', lang:LANG };
 }
 
 const INSPIRATION_SOURCES = [
@@ -731,22 +915,26 @@ const INSPIRATION_SOURCES = [
         const d = new Date(); d.setDate(d.getDate() - back);
         const p = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
         try {
-          const j = await getJSON(`https://fa.wikipedia.org/api/rest_v1/feed/featured/${p}`);
-          const out = [wikiItem(j.tfa, '⭐ مقاله برگزیده')];
-          (j.onthisday || []).slice(0, 4).forEach(e => { if (e.text) out.push({ title:`در چنین روزی — ${e.year}`, desc:e.text.slice(0,170), link:e.pages?.[0]?.content_urls?.desktop?.page || '#', category:'🕰️ تاریخ', source:'ویکی‌پدیا', lang:'fa' }); });
+          const j = await getJSON(`${wikiBase()}/feed/featured/${p}`);
+          const out = [wikiItem(j.tfa, 'tfa')];
+          (j.onthisday || []).slice(0, 4).forEach(e => { if (e.text) out.push({ title:t('onthisday', {y:e.year}), desc:e.text.slice(0,170), link:e.pages?.[0]?.content_urls?.desktop?.page || '#', cat:'history', srcKey:'src_wiki', lang:LANG }); });
           const ok = out.filter(Boolean);
           if (ok.length) return ok;
         } catch (e) { /* روز بعدی */ }
       }
       throw new Error('no wiki feed');
   } },
-  { icon:'🎲', fetch: async () => [wikiItem(await getJSON('https://fa.wikipedia.org/api/rest_v1/page/random/summary'), '🎲 تصادفی')].filter(Boolean) },
-  { icon:'🎲', fetch: async () => [wikiItem(await getJSON('https://fa.wikipedia.org/api/rest_v1/page/random/summary'), '🎲 تصادفی')].filter(Boolean) },
-  { icon:'💭', fetch: async () => { const j = await getJSON('https://dummyjson.com/quotes/random'); return [{ title:j.author, desc:j.quote, link:'#', category:'💭 نقل قول', source:'DummyJSON', lang:'en' }]; } },
-  { icon:'💡', fetch: async () => { const j = await getJSON('https://api.adviceslip.com/advice'); return [{ title:'Advice', desc:j.slip.advice, link:'#', category:'💡 توصیه', source:'Advice Slip', lang:'en' }]; } },
-  { icon:'🏛️', fetch: async () => { const j = await getJSON('https://stoic-quotes.com/api/quote'); return [{ title:j.author, desc:j.text || j.body, link:'#', category:'🏛️ رواقی', source:'Stoic Quotes', lang:'en' }]; } },
-  { icon:'🌌', fetch: async () => { const j = await getJSON('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY'); return [{ title:j.title, desc:(j.explanation || '').slice(0,170), link:j.url || '#', category:'🌌 فضا', source:'NASA', lang:'en' }]; } }
+  { icon:'🎲', fetch: async () => [wikiItem(await getJSON(`${wikiBase()}/page/random/summary`), 'random')].filter(Boolean) },
+  { icon:'🎲', fetch: async () => [wikiItem(await getJSON(`${wikiBase()}/page/random/summary`), 'random')].filter(Boolean) },
+  { icon:'💭', fetch: async () => { const j = await getJSON('https://dummyjson.com/quotes/random'); return [{ title:j.author, desc:j.quote, link:'#', cat:'quote', source:'DummyJSON', lang:'en' }]; } },
+  { icon:'💡', fetch: async () => { const j = await getJSON('https://api.adviceslip.com/advice'); return [{ title:'Advice', desc:j.slip.advice, link:'#', cat:'advice', source:'Advice Slip', lang:'en' }]; } },
+  { icon:'🏛️', fetch: async () => { const j = await getJSON('https://stoic-quotes.com/api/quote'); return [{ title:j.author, desc:j.text || j.body, link:'#', cat:'stoic', source:'Stoic Quotes', lang:'en' }]; } },
+  { icon:'🌌', fetch: async () => { const j = await getJSON('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY'); return [{ title:j.title, desc:(j.explanation || '').slice(0,170), link:j.url || '#', cat:'space', source:'NASA', lang:'en' }]; } }
 ];
+
+// برچسب دسته و منبع هنگام نمایش ترجمه می‌شوند (آیتم‌های قدیمیِ کش‌شده هم پشتیبانی می‌شوند)
+function itemCat(i) { return i.cat ? t('c_' + i.cat) : (i.category || ''); }
+function itemSrc(i) { return i.srcKey ? t(i.srcKey) : (i.source || ''); }
 
 async function fetchFromSources(count = 3) {
   const settled = await Promise.allSettled(INSPIRATION_SOURCES.map(s =>
@@ -783,8 +971,8 @@ function renderDashboard() {
   const needed = xpForLevel(data.level);
   const r = rankOf(data.level), next = RANKS.find(x => x[0] > data.level);
   $('dash-level').textContent = data.level;
-  $('dash-rank').innerHTML = `<b>${r[2]}</b>${esc(r[1])}`;
-  $('dash-sub').textContent = next ? `${next[0] - data.level} سطح تا لقب «${next[1]}»` : 'به بالاترین لقب رسیدی';
+  $('dash-rank').innerHTML = `<b>${r[2]}</b>${esc(rankName(r))}`;
+  $('dash-sub').textContent = next ? t('next_rank', {n:next[0] - data.level, name:rankName(next)}) : t('max_rank');
   $('dash-today').textContent = data.todayXP;
   $('dash-streak').textContent = data.streak;
   $('dash-done').textContent = data.questsCompleted;
@@ -799,7 +987,7 @@ function renderDashboard() {
 
   const pinned = active.filter(d => d.pinned);
   $('dash-pinned-count').textContent = pinned.length;
-  $('dash-pinned-habits').innerHTML = pinned.length ? pinned.map(renderTodayCard).join('') : '<div class="empty">عادت پین‌شده‌ای برای امروز نیست</div>';
+  $('dash-pinned-habits').innerHTML = pinned.length ? pinned.map(renderTodayCard).join('') : `<div class="empty">${t('empty_pinned')}</div>`;
 }
 
 function renderTodayCard(d) {
@@ -809,19 +997,19 @@ function renderTodayCard(d) {
   const box = d.target === 1;
   return `
     <div class="today-card ${d.done ? 'done' : ''} ${miss ? 'important-miss' : ''}">
-      <div class="today-top"><div class="today-name">${esc(d.title)}</div><div class="today-cat">${CATEGORIES[d.category] || 'عمومی'}</div></div>
+      <div class="today-top"><div class="today-name">${esc(habitTitle(d))}</div><div class="today-cat">${t('cat_' + (d.category || 'general'))}</div></div>
       <div class="today-progress"><div class="today-progress-fill" style="width:${pct}%"></div></div>
       <div class="today-bottom">
         ${box ? `
-          <div class="today-count">${d.done ? '✓ انجام شد' : 'انجام نشده'}</div>
+          <div class="today-count">${d.done ? t('done_text') : t('not_done')}</div>
           <div class="today-xp">${d.done ? maxXP : 0}/${maxXP} XP</div>
-          <button class="today-btn" onclick="toggleDaily('${d.id}')" aria-label="تغییر وضعیت">${d.done ? '↺' : '✓'}</button>
+          <button class="today-btn" onclick="toggleDaily('${d.id}')" aria-label="${t('aria_toggle')}">${d.done ? '↺' : '✓'}</button>
         ` : `
           <div class="today-count">${d.current}/${d.target}</div>
           <div class="today-xp">${earned}/${maxXP} XP</div>
           <div class="today-actions">
-            ${d.current > 0 ? `<button class="today-btn minus" onclick="decDaily('${d.id}')" aria-label="کم کردن">−</button>` : ''}
-            ${d.current < d.target ? `<button class="today-btn" onclick="incDaily('${d.id}')" aria-label="اضافه کردن">+</button>` : ''}
+            ${d.current > 0 ? `<button class="today-btn minus" onclick="decDaily('${d.id}')" aria-label="${t('aria_dec')}">−</button>` : ''}
+            ${d.current < d.target ? `<button class="today-btn" onclick="incDaily('${d.id}')" aria-label="${t('aria_inc')}">+</button>` : ''}
           </div>
         `}
       </div>
@@ -830,14 +1018,14 @@ function renderTodayCard(d) {
 
 function renderQuests() {
   const activeCount = data.dailies.filter(isHabitActiveToday).length;
-  $('daily-count').textContent = `${activeCount} عادت برای امروز · ${data.dailies.length} کل`;
-  $('daily-list').innerHTML = data.dailies.length ? data.dailies.map(renderDailyItem).join('') : '<div class="empty">هنوز عادت روزانه‌ای نداری. اولی را اضافه کن.</div>';
+  $('daily-count').textContent = t('daily_count', {a:activeCount, b:data.dailies.length});
+  $('daily-list').innerHTML = data.dailies.length ? data.dailies.map(renderDailyItem).join('') : `<div class="empty">${t('empty_daily')}</div>`;
 
-  $('main-count').textContent = `${data.mains.filter(m => !m.done).length} ماموریت باز`;
-  $('main-list').innerHTML = data.mains.length ? data.mains.map(renderMainItem).join('') : '<div class="empty">ماموریت اصلی‌ای نیست. یک هدف بزرگ بنویس.</div>';
+  $('main-count').textContent = t('open_count', {n:data.mains.filter(m => !m.done).length});
+  $('main-list').innerHTML = data.mains.length ? data.mains.map(renderMainItem).join('') : `<div class="empty">${t('empty_main')}</div>`;
 
-  $('side-count').textContent = `${data.sides.filter(s => !s.done).length} ماموریت باز`;
-  $('side-list').innerHTML = data.sides.length ? data.sides.map(renderSideItem).join('') : '<div class="empty">ماموریت فرعی‌ای نیست.</div>';
+  $('side-count').textContent = t('open_count', {n:data.sides.filter(s => !s.done).length});
+  $('side-list').innerHTML = data.sides.length ? data.sides.map(renderSideItem).join('') : `<div class="empty">${t('empty_side')}</div>`;
 }
 
 function renderDailyItem(d) {
@@ -847,24 +1035,24 @@ function renderDailyItem(d) {
     <div class="quest-item ${d.done ? 'done' : ''} ${d.important && !d.done && !off ? 'important' : ''} ${off ? 'inactive' : ''}">
       ${box ? `<div class="quest-check" onclick="toggleDaily('${d.id}')" role="checkbox" aria-checked="${d.done}"></div>` : ''}
       <div class="quest-content">
-        <div class="quest-title">${esc(d.title)}</div>
+        <div class="quest-title">${esc(habitTitle(d))}</div>
         <div class="quest-meta">
-          <span class="tag tag-cat">${CATEGORIES[d.category] || 'عمومی'}</span>
-          <span>${FREQUENCY[d.frequency]}</span>
-          ${off ? '<span class="tag tag-off">امروز نوبتش نیست</span>' : ''}
-          ${d.important ? '<span class="tag tag-important">مهم</span>' : ''}
-          ${d.pinned ? '<span class="tag tag-pinned">پین</span>' : ''}
+          <span class="tag tag-cat">${t('cat_' + (d.category || 'general'))}</span>
+          <span>${t('freq_' + (d.frequency || 'daily'))}</span>
+          ${off ? `<span class="tag tag-off">${t('tag_off')}</span>` : ''}
+          ${d.important ? `<span class="tag tag-important">${t('tag_important')}</span>` : ''}
+          ${d.pinned ? `<span class="tag tag-pinned">${t('tag_pinned')}</span>` : ''}
         </div>
       </div>
       ${!box ? `<div class="daily-counter">
-        <button class="counter-btn minus" onclick="decDaily('${d.id}')" aria-label="کم کردن">−</button>
+        <button class="counter-btn minus" onclick="decDaily('${d.id}')" aria-label="${t('aria_dec')}">−</button>
         <div class="counter-value">${d.current}/${d.target}</div>
-        <button class="counter-btn" onclick="incDaily('${d.id}')" aria-label="اضافه کردن">+</button>
+        <button class="counter-btn" onclick="incDaily('${d.id}')" aria-label="${t('aria_inc')}">+</button>
       </div>` : ''}
       <div class="quest-xp">${earned}/${maxXP}</div>
       <div class="quest-actions">
-        <button class="btn-icon ${d.pinned ? 'pin-active' : ''}" onclick="togglePin('${d.id}')" aria-label="پین">📌</button>
-        <button class="btn-icon delete" onclick="delDaily('${d.id}')" aria-label="حذف">×</button>
+        <button class="btn-icon ${d.pinned ? 'pin-active' : ''}" onclick="togglePin('${d.id}')" aria-label="${t('aria_pin')}">📌</button>
+        <button class="btn-icon delete" onclick="delDaily('${d.id}')" aria-label="${t('aria_del')}">×</button>
       </div>
     </div>`;
 }
@@ -877,12 +1065,12 @@ function renderMainItem(m) {
       <div class="quest-content">
         <div class="quest-title">${esc(m.title)}</div>
         <div class="quest-meta">
-          ${m.deadline ? `<span class="tag tag-deadline">مهلت: ${formatDate(m.deadline)}</span>` : ''}
-          ${overdue ? '<span class="tag tag-overdue">عقب‌افتاده</span>' : ''}
+          ${m.deadline ? `<span class="tag tag-deadline">${t('tag_deadline', {d:formatDate(m.deadline)})}</span>` : ''}
+          ${overdue ? `<span class="tag tag-overdue">${t('tag_overdue')}</span>` : ''}
         </div>
       </div>
       <div class="quest-xp">+${XP_MAIN}</div>
-      <button class="btn-icon delete" onclick="delMain(${m.id})" aria-label="حذف">×</button>
+      <button class="btn-icon delete" onclick="delMain(${m.id})" aria-label="${t('aria_del')}">×</button>
     </div>`;
 }
 
@@ -892,35 +1080,35 @@ function renderSideItem(s) {
       <div class="quest-check" onclick="toggleSide(${s.id})" role="checkbox" aria-checked="${s.done}"></div>
       <div class="quest-content"><div class="quest-title">${esc(s.title)}</div></div>
       <div class="quest-xp">+${XP_SIDE}</div>
-      <button class="btn-icon delete" onclick="delSide(${s.id})" aria-label="حذف">×</button>
+      <button class="btn-icon delete" onclick="delSide(${s.id})" aria-label="${t('aria_del')}">×</button>
     </div>`;
 }
 
 function renderProfile() {
   $('prof-level').textContent = data.level;
-  $('prof-xp-sub').textContent = `${data.totalXP} XP کسب شده`;
+  $('prof-xp-sub').textContent = t('xp_earned', {n:data.totalXP});
   $('prof-quests').textContent = data.questsCompleted;
   $('prof-stat-points').textContent = data.statPoints;
 
   $('stat-points-banner-wrap').innerHTML = data.statPoints > 0 ? `
     <div class="stat-points-banner">
-      <div class="stat-points-text">🎯 <strong>${data.statPoints}</strong> امتیاز ویژگی آماده اختصاص است</div>
-      <button class="btn-allocate" onclick="openStatModal()">اختصاص بده</button>
+      <div class="stat-points-text">${t('points_banner', {n:data.statPoints})}</div>
+      <button class="btn-allocate" onclick="openStatModal()">${t('allocate_btn')}</button>
     </div>` : '';
 
   const r = rankOf(data.level);
   $('prof-stats-list').innerHTML = `
-    <div class="prof-row"><span class="prof-row-label">لقب</span><span class="prof-row-value">${r[2]} ${esc(r[1])}</span></div>
-    <div class="prof-row"><span class="prof-row-label">کل XP کسب‌شده</span><span class="prof-row-value">${data.totalXP}</span></div>
-    <div class="prof-row"><span class="prof-row-label">XP امروز</span><span class="prof-row-value">${data.todayXP}</span></div>
-    <div class="prof-row"><span class="prof-row-label">روزهای متوالی</span><span class="prof-row-value">${data.streak}</span></div>
-    <div class="prof-row"><span class="prof-row-label">ماموریت‌های باز</span><span class="prof-row-value">${data.mains.filter(m => !m.done).length + data.sides.filter(s => !s.done).length}</span></div>`;
+    <div class="prof-row"><span class="prof-row-label">${t('row_rank')}</span><span class="prof-row-value">${r[2]} ${esc(rankName(r))}</span></div>
+    <div class="prof-row"><span class="prof-row-label">${t('row_total')}</span><span class="prof-row-value">${data.totalXP}</span></div>
+    <div class="prof-row"><span class="prof-row-label">${t('row_today')}</span><span class="prof-row-value">${data.todayXP}</span></div>
+    <div class="prof-row"><span class="prof-row-label">${t('row_streak')}</span><span class="prof-row-value">${data.streak}</span></div>
+    <div class="prof-row"><span class="prof-row-label">${t('row_open')}</span><span class="prof-row-value">${data.mains.filter(m => !m.done).length + data.sides.filter(s => !s.done).length}</span></div>`;
 
   $('prof-attr').innerHTML = Object.entries(data.stats).map(([k, s]) => {
     const e = STAT_EFFECTS[k];
     return `
       <div class="stat-row">
-        <div class="stat-row-head"><span class="stat-row-name">${e.icon} ${k} · ${e.label}</span><span class="stat-row-value">${s.value}</span></div>
+        <div class="stat-row-head"><span class="stat-row-name">${e.icon} ${k} · ${statLabel(k)}</span><span class="stat-row-value">${s.value}</span></div>
         <div class="stat-row-bar"><div class="stat-row-fill" style="width:${Math.min(100, s.value)}%"></div></div>
         <div class="stat-effect">${e.getEffect(s.value)}</div>
       </div>`;
@@ -928,7 +1116,7 @@ function renderProfile() {
 }
 
 function formatDate(str) {
-  try { return new Date(str).toLocaleDateString('fa-IR', { month:'short', day:'numeric' }); } catch (e) { return str; }
+  try { return new Date(str).toLocaleDateString(LANG === 'fa' ? 'fa-IR' : 'en-US', { month:'short', day:'numeric' }); } catch (e) { return str; }
 }
 
 // ============ ACTIONS ============
@@ -942,7 +1130,7 @@ function incDaily(id) {
   const xp = addXP(d.xpPerUnit, d.category);
   d.log.push(xp);
   if (d.current >= d.target) d.done = true;
-  commit(d.done ? `✓ ${d.title} تکمیل شد` : `+${xp} XP`, xp);
+  commit(d.done ? t('quest_done', {t:habitTitle(d)}) : `+${xp} XP`, xp);
 }
 
 function decDaily(id) {
@@ -968,13 +1156,13 @@ function toggleDaily(id) {
     let total = 0;
     while (d.current < d.target) { d.current++; const a = addXP(d.xpPerUnit, d.category); d.log.push(a); total += a; }
     d.done = true;
-    commit(`✓ ${d.title} انجام شد`, total);
+    commit(t('quest_done2', {t:habitTitle(d)}), total);
   }
 }
 
 function delDaily(id) {
   const d = getDaily(id);
-  if (!d || !confirm(`«${d.title}» حذف شود؟`)) return;
+  if (!d || !confirm(t('confirm_del', {t:habitTitle(d)}))) return;
   if (id.startsWith('def-') && !data.removedDefaults.includes(id)) data.removedDefaults.push(id);
   data.dailies = data.dailies.filter(x => x.id !== id);
   save(); render();
@@ -983,10 +1171,10 @@ function delDaily(id) {
 function togglePin(id) {
   const d = getDaily(id);
   if (!d) return;
-  if (d.pinned) { d.pinned = false; toast('پین برداشته شد'); }
+  if (d.pinned) { d.pinned = false; toast(t('pin_removed')); }
   else {
-    if (data.dailies.filter(x => x.pinned).length >= MAX_PINNED) { toast(`حداکثر ${MAX_PINNED} عادت قابل پین است`, 'warning'); return; }
-    d.pinned = true; toast('پین شد');
+    if (data.dailies.filter(x => x.pinned).length >= MAX_PINNED) { toast(t('pin_max', {n:MAX_PINNED}), 'warning'); return; }
+    d.pinned = true; toast(t('pinned'));
   }
   save(); render();
 }
@@ -1012,7 +1200,7 @@ function toggleSide(id) { toggleQuest('sides', id, XP_SIDE); }
 
 function delQuest(list, id) {
   const q = data[list].find(x => x.id === id);
-  if (!q || !confirm(`«${q.title}» حذف شود؟`)) return;
+  if (!q || !confirm(t('confirm_del', {t:q.title}))) return;
   data[list] = data[list].filter(x => x.id !== id);
   save(); render();
 }
@@ -1020,9 +1208,13 @@ function delMain(id) { delQuest('mains', id); }
 function delSide(id) { delQuest('sides', id); }
 
 // ============ MODAL ============
+function setModalTitle() {
+  const type = currentModalType;
+  $('modal-title').textContent = type === 'daily' ? t('add_daily_title') : type === 'main' ? t('add_main_title') : t('add_side_title');
+}
 function openAddModal(type) {
   currentModalType = type;
-  $('modal-title').textContent = type === 'daily' ? 'افزودن عادت روزانه' : type === 'main' ? 'افزودن ماموریت اصلی' : 'افزودن ماموریت فرعی';
+  setModalTitle();
   $('m-daily-fields').style.display = type === 'daily' ? 'block' : 'none';
   $('m-main-fields').style.display = type === 'main' ? 'block' : 'none';
   $('m-side-fields').style.display = type === 'side' ? 'block' : 'none';
@@ -1035,7 +1227,7 @@ function closeModal() { $('add-modal').classList.remove('show'); }
 
 function saveQuest() {
   const title = $('m-title').value.trim();
-  if (!title) { toast('عنوان را وارد کن', 'penalty'); return; }
+  if (!title) { toast(t('need_title'), 'penalty'); return; }
   if (currentModalType === 'daily') {
     data.dailies.push({
       id:'d' + Date.now(), title,
@@ -1052,41 +1244,143 @@ function saveQuest() {
   } else {
     data.sides.push({ id:Date.now(), title, done:false, created:new Date().toISOString() });
   }
-  save(); closeModal(); render(); toast('✓ اضافه شد');
+  save(); closeModal(); render(); toast(t('added'));
 }
 
 // ============ LEVEL UP ============
-function showLevelUp() {
+function showLevelUpTexts() {
   const r = rankOf(data.level);
   $('lu-level').textContent = data.level;
-  $('lu-rank').textContent = `${r[2]} ${r[1]}`;
+  $('lu-rank').textContent = `${r[2]} ${rankName(r)}`;
   $('lu-points').textContent = data.statPoints;
-  $('lu-achievement-wrap').innerHTML = data.level % 5 === 0 ? `<div class="achievement-badge"><span>🏅 رسیدن به سطح ${data.level}</span></div>` : '';
-  $('lu-unlock-wrap').innerHTML = RANKS.some(x => x[0] === data.level) ? `<div class="unlock-badge"><span>🎖️ لقب جدید: ${esc(r[1])}</span></div>` : '';
+  $('lu-achievement-wrap').innerHTML = data.level % 5 === 0 ? `<div class="achievement-badge"><span>${t('lu_milestone', {n:data.level})}</span></div>` : '';
+  $('lu-unlock-wrap').innerHTML = RANKS.some(x => x[0] === data.level) ? `<div class="unlock-badge"><span>${t('lu_newrank', {r:esc(rankName(r))})}</span></div>` : '';
+}
+function showLevelUp() {
+  showLevelUpTexts();
   $('levelup-modal').classList.add('show');
   confetti();
   loadRewardOptions();
 }
 
+// ============ REWARDS: سرگرمی تصادفی از اینترنت (فیلم، سریال، موسیقی، کتاب، بازی) ============
+// فقط «کلمه‌ی جستجو» داخل کد است؛ خود پیشنهادها همیشه از سایت‌ها می‌آیند.
+const REWARD_SEEDS = {
+  movie: ['action','comedy','drama','thriller','adventure','animation','sci-fi','romance','fantasy','crime','family','mystery','war','biography','western'],
+  music: ['rock','jazz','pop','electronic','classical','hip hop','indie','soul','folk','ambient','blues','metal','lofi','funk','reggae'],
+  book: ['fiction','fantasy','science_fiction','history','philosophy','psychology','biography','adventure','mystery','self-help','business','poetry','horror','science','classics'],
+  game: ['puzzle','adventure','strategy','racing','rpg','arcade','platformer','simulation','sports','card game']
+};
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const rint = n => Math.floor(Math.random() * n);
+const itunesArt = u => (u || '').replace('100x100', '300x300');
+const stripHtml = x => String(x || '').replace(/<[^>]*>/g, '').trim();
+const itunes = (term, media, entity) => getJSON(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=${media}&entity=${entity}&limit=50`).then(j => (j.results || []).filter(x => x.trackName));
+
+const REWARD_SOURCES = {
+  movie: [
+    async () => {
+      const r = pick(await itunes(pick(REWARD_SEEDS.movie), 'movie', 'movie'));
+      if (!r) throw new Error('empty');
+      return { cat:'movie', title:r.trackName, sub:[r.artistName, (r.releaseDate || '').slice(0,4), r.primaryGenreName].filter(Boolean).join(' · '),
+        desc:(r.longDescription || r.shortDescription || '').slice(0,180), link:r.trackViewUrl, img:itunesArt(r.artworkUrl100) };
+    }
+  ],
+  show: [
+    async () => {
+      const j = await getJSON(`https://api.tvmaze.com/shows?page=${rint(120)}`);
+      const r = pick(j.filter(x => x.name && x.summary && x.rating && x.rating.average >= 7));
+      if (!r) throw new Error('empty');
+      return { cat:'show', title:r.name, sub:[(r.premiered || '').slice(0,4), (r.genres || []).slice(0,2).join('/'), `★ ${r.rating.average}`].filter(Boolean).join(' · '),
+        desc:stripHtml(r.summary).slice(0,180), link:r.url, img:((r.image && r.image.medium) || '').replace('http://','https://') };
+    }
+  ],
+  music: [
+    async () => {
+      const r = pick(await itunes(pick(REWARD_SEEDS.music), 'music', 'song'));
+      if (!r) throw new Error('empty');
+      return { cat:'music', title:r.trackName, sub:[r.artistName, r.collectionName].filter(Boolean).join(' · '),
+        desc:[r.primaryGenreName, (r.releaseDate || '').slice(0,4)].filter(Boolean).join(' · '), link:r.trackViewUrl, img:itunesArt(r.artworkUrl100) };
+    },
+    async () => {
+      const j = await getJSON('https://rss.applemarketingtools.com/api/v2/us/music/most-played/100/songs.json');
+      const r = pick((j.feed && j.feed.results) || []);
+      if (!r) throw new Error('empty');
+      return { cat:'music', title:r.name, sub:r.artistName, desc:(r.genres || []).map(g => g.name).filter(g => g !== 'Music').join(' · '), link:r.url, img:itunesArt(r.artworkUrl100) };
+    }
+  ],
+  book: [
+    async () => {
+      const q = encodeURIComponent('subject:' + pick(REWARD_SEEDS.book));
+      const j = await getJSON(`https://openlibrary.org/search.json?q=${q}&sort=rating&limit=30&offset=${rint(100)}&fields=key,title,author_name,first_publish_year,cover_i,ratings_average`);
+      const r = pick((j.docs || []).filter(x => x.title && x.cover_i));
+      if (!r) throw new Error('empty');
+      return { cat:'book', title:r.title, sub:[(r.author_name || [])[0], r.first_publish_year].filter(Boolean).join(' · '),
+        desc:r.ratings_average ? `★ ${r.ratings_average.toFixed(1)}` : '', link:`https://openlibrary.org${r.key}`, img:`https://covers.openlibrary.org/b/id/${r.cover_i}-M.jpg` };
+    },
+    async () => {
+      const r = pick(await itunes(pick(REWARD_SEEDS.book).replace('_', ' '), 'ebook', 'ebook'));
+      if (!r) throw new Error('empty');
+      return { cat:'book', title:r.trackName, sub:r.artistName, desc:stripHtml(r.description).slice(0,180), link:r.trackViewUrl, img:itunesArt(r.artworkUrl100) };
+    }
+  ],
+  game: [
+    async () => {
+      const j = await getJSON(`https://www.cheapshark.com/api/1.0/deals?storeID=1&metacritic=75&pageSize=60&sortBy=Metacritic&pageNumber=${rint(8)}`);
+      const r = pick(j.filter(x => x.title && x.steamAppID));
+      if (!r) throw new Error('empty');
+      return { cat:'game', title:r.title, sub:[`Metacritic ${r.metacriticScore}`, r.steamRatingText].filter(Boolean).join(' · '), desc:'',
+        link:`https://store.steampowered.com/app/${r.steamAppID}`, img:`https://cdn.cloudflare.steamstatic.com/steam/apps/${r.steamAppID}/header.jpg` };
+    },
+    async () => {
+      const r = pick(await itunes(pick(REWARD_SEEDS.game) + ' game', 'software', 'software'));
+      if (!r) throw new Error('empty');
+      return { cat:'game', title:r.trackName, sub:[r.artistName, r.primaryGenreName].filter(Boolean).join(' · '), desc:stripHtml(r.description).slice(0,180), link:r.trackViewUrl, img:itunesArt(r.artworkUrl100) };
+    }
+  ]
+};
+
+// از بین دسته‌ها، سه‌تا (با ترتیب تصادفی) انتخاب می‌شود؛ اگر منبعی خراب بود، به منبع بعدیِ همان دسته می‌رود
+async function fetchRewards(n = 3) {
+  const cats = shuffle(Object.keys(REWARD_SOURCES));
+  const got = await Promise.all(cats.map(async cat => {
+    for (const fn of REWARD_SOURCES[cat]) { try { const it = await fn(); if (it && it.title) return { ...it, lang:'en' }; } catch (e) { /* منبع بعدی */ } }
+    return null;
+  }));
+  const taken = new Set(data.selectedRewards.map(r => r.title));
+  return got.filter(i => i && !taken.has(i.title)).slice(0, n);
+}
+
+let rewardReq = 0;
+function renderRewardOptions() {
+  const items = window.currentRewardOptions || [];
+  $('lu-reward-options').innerHTML = items.map((i, idx) => `
+    <div class="reward-option" onclick="selectReward(${idx})">
+      ${i.img && safeUrl(i.img) !== '#' ? `<img class="reward-thumb" src="${esc(i.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">` : ''}
+      <div class="reward-body">
+        <div class="reward-option-category">${esc(t('r_' + i.cat))}</div>
+        <div class="reward-option-title" dir="auto">${esc(i.title)}</div>
+        ${i.sub ? `<div class="reward-option-sub" dir="auto">${esc(i.sub)}</div>` : ''}
+        ${i.desc ? `<div class="reward-option-desc" dir="auto">${esc(i.desc)}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
 async function loadRewardOptions() {
   const el = $('lu-reward-options');
+  const my = ++rewardReq;
   rewardPicked = false;
   window.currentRewardOptions = [];
-  if (!navigator.onLine) { el.innerHTML = '<div class="empty">📡 اینترنت وصل نیست؛ جایزه‌ها از اینترنت می‌آیند.<br>وقتی وصل شدی ↻ را بزن.</div>'; return; }
-  el.innerHTML = '<div class="feed-loading">در حال بارگذاری پیشنهادات...</div>';
+  if (!navigator.onLine) { el.innerHTML = `<div class="empty">${t('rw_offline')}</div>`; return; }
+  el.innerHTML = `<div class="feed-loading">${t('rw_loading')}</div>`;
   try {
-    const items = await fetchFromSources(9);
-    const fresh = items.filter(i => !data.selectedRewards.some(r => r.title === i.title)).slice(0, 3);
-    if (!fresh.length) { el.innerHTML = '<div class="empty">فعلاً چیزی دریافت نشد. ↻ را بزن.</div>'; return; }
-    window.currentRewardOptions = fresh;
-    el.innerHTML = fresh.map((i, idx) => `
-      <div class="reward-option" onclick="selectReward(${idx})">
-        <div class="reward-option-category">${esc(i.category)}</div>
-        <div class="reward-option-title" dir="${i.lang === 'fa' ? 'rtl' : 'ltr'}">${esc(i.title)}</div>
-        <div class="reward-option-desc" dir="${i.lang === 'fa' ? 'rtl' : 'ltr'}">${esc(i.desc)}</div>
-      </div>`).join('');
+    const items = await fetchRewards(3);
+    if (my !== rewardReq) return;
+    if (!items.length) { el.innerHTML = `<div class="empty">${t('rw_none')}</div>`; return; }
+    window.currentRewardOptions = items;
+    renderRewardOptions();
   } catch (e) {
-    el.innerHTML = '<div class="empty">خطا در بارگذاری پیشنهادات. ↻ را بزن.</div>';
+    if (my === rewardReq) el.innerHTML = `<div class="empty">${t('rw_err')}</div>`;
   }
 }
 
@@ -1099,9 +1393,9 @@ function selectReward(idx) {
     el.classList.add('locked');
     el.classList.toggle('selected', i === idx);
   });
-  data.selectedRewards.push({ level:data.level, title:item.title, link:item.link, category:item.category, date:new Date().toISOString() });
+  data.selectedRewards.push({ level:data.level, title:item.title, link:item.link, category:t('r_' + item.cat), date:new Date().toISOString() });
   save();
-  toast('✓ جایزه انتخاب شد!');
+  toast(t('rw_picked'));
   if (safeUrl(item.link) !== '#') window.open(item.link, '_blank', 'noopener');
 }
 
@@ -1111,10 +1405,10 @@ function allocateStat(stat) {
   data.statPoints--;
   save(); render();
   $('lu-points').textContent = data.statPoints;
-  toast(`+1 ${stat} (${STAT_EFFECTS[stat].label})`);
+  toast(t('stat_plus', {s:stat, l:statLabel(stat)}));
   if (data.statPoints <= 0) $('levelup-modal').classList.remove('show');
 }
-function skipStatAllocation() { $('levelup-modal').classList.remove('show'); if (data.statPoints > 0) toast('امتیاز را از پروفایل می‌توانی خرج کنی'); }
+function skipStatAllocation() { $('levelup-modal').classList.remove('show'); if (data.statPoints > 0) toast(t('stat_later')); }
 
 function openStatModal() { $('stat-modal-points').textContent = data.statPoints; $('stat-modal').classList.add('show'); }
 function closeStatModal() { $('stat-modal').classList.remove('show'); }
@@ -1124,7 +1418,7 @@ function allocateStatFromProfile(stat) {
   data.statPoints--;
   save(); render();
   $('stat-modal-points').textContent = data.statPoints;
-  toast(`+1 ${stat} (${STAT_EFFECTS[stat].label})`);
+  toast(t('stat_plus', {s:stat, l:statLabel(stat)}));
   if (data.statPoints <= 0) setTimeout(closeStatModal, 700);
 }
 
@@ -1134,8 +1428,8 @@ function checkMainQuestReminder() {
   if (now - data.lastReminder < 10 * 86400000) return;
   const old = data.mains.filter(m => !m.done && Math.floor((now - new Date(m.created)) / 86400000) >= 10);
   if (!old.length) return;
-  $('reminder-text').textContent = `تو ${old.length} ماموریت اصلی داری که بیش از ۱۰ روز از ثبتشون گذشته:\n\n` +
-    old.slice(0, 3).map(m => `• ${m.title}`).join('\n') + (old.length > 3 ? `\n• و ${old.length - 3} ماموریت دیگر...` : '');
+  $('reminder-text').textContent = t('rm_text', {n:old.length}) + '\n\n' +
+    old.slice(0, 3).map(m => `• ${m.title}`).join('\n') + (old.length > 3 ? '\n' + t('rm_more', {n:old.length - 3}) : '');
   $('reminder-modal').classList.add('show');
   data.lastReminder = now;
   save();
@@ -1146,34 +1440,36 @@ function closeReminder() { $('reminder-modal').classList.remove('show'); }
 let feedBusy = false;
 
 function feedEmpty(offline) {
-  return `<div class="empty">${offline ? '📡 اینترنت وصل نیست.<br>این بخش فقط محتوای واقعی از اینترنت نشان می‌دهد؛ با وصل شدن خودکار پر می‌شود.' : '⚠️ هیچ منبعی پاسخ نداد.<br>اتصال را بررسی کن و دوباره امتحان کن.'}<br><button class="btn-add" onclick="refreshFeed()">تلاش دوباره</button></div>`;
+  return `<div class="empty">${offline ? t('feed_offline_html') : t('feed_fail_html')}<br><button class="btn-add" onclick="refreshFeed()">${t('retry')}</button></div>`;
 }
 
 async function loadFeed(force = false) {
   const el = $('dash-feed'), st = $('feed-status');
   const c = data.feedCache || {};
-  const hasCache = c.items && c.items.length;
+  // کش فقط برای همان زبانی معتبر است که با آن دریافت شده (کش قدیمی بدون برچسب = فارسی)
+  const sameLang = (c.lang || 'fa') === LANG;
+  const hasCache = sameLang && c.items && c.items.length;
   const fresh = hasCache && Date.now() - c.time < 3600000;
 
-  if (!force && fresh) { renderFeedItems(c.items); st.textContent = `${c.items.length} مورد`; return; }
+  if (!force && fresh) { renderFeedItems(c.items); st.textContent = t('feed_n', {n:c.items.length}); return; }
   if (!navigator.onLine) {
-    if (hasCache) { renderFeedItems(c.items); st.textContent = 'آفلاین · آخرین محتوای دریافت‌شده'; }
-    else { el.innerHTML = feedEmpty(true); st.textContent = 'آفلاین'; }
+    if (hasCache) { renderFeedItems(c.items); st.textContent = t('feed_offline_cache'); }
+    else { el.innerHTML = feedEmpty(true); st.textContent = t('feed_offline'); }
     return;
   }
   if (feedBusy) return;
   feedBusy = true;
-  if (!hasCache || force) el.innerHTML = '<div class="feed-loading">در حال بارگذاری...</div>';
+  if (!hasCache || force) el.innerHTML = `<div class="feed-loading">${t('loading')}</div>`;
   try {
     const items = await fetchFromSources(6);
     if (!items.length) throw new Error('empty');
-    data.feedCache = { items, time: Date.now() };
+    data.feedCache = { items, time: Date.now(), lang: LANG };
     save();
     renderFeedItems(items);
-    st.textContent = `${items.length} مورد`;
+    st.textContent = t('feed_n', {n:items.length});
   } catch (e) {
-    if (hasCache) { renderFeedItems(c.items); st.textContent = 'به‌روزرسانی نشد · محتوای قبلی'; }
-    else { el.innerHTML = feedEmpty(false); st.textContent = 'خطا'; }
+    if (hasCache) { renderFeedItems(c.items); st.textContent = t('feed_stale'); }
+    else { el.innerHTML = feedEmpty(false); st.textContent = t('feed_error'); }
   } finally { feedBusy = false; }
 }
 
@@ -1182,7 +1478,7 @@ function renderFeedItems(items) {
     const link = safeUrl(i.link), a = link !== '#', dir = i.lang === 'fa' ? 'rtl' : 'ltr';
     const open = a ? `a href="${esc(link)}" target="_blank" rel="noopener noreferrer"` : 'div';
     return `<${open} class="feed-item">
-      <div class="feed-source">${i.sourceIcon || ''} ${esc(i.category || '')} · ${esc(i.source || '')}</div>
+      <div class="feed-source">${i.sourceIcon || ''} ${esc(itemCat(i))} · ${esc(itemSrc(i))}</div>
       <div class="feed-title" dir="${dir}">${esc(i.title)}</div>
       <div class="feed-desc" dir="${dir}">${esc(i.desc)}</div>
     </${a ? 'a' : 'div'}>`;
@@ -1203,11 +1499,11 @@ async function refreshRewards(btn) {
 // ============ EFFECTS ============
 let toastTimer;
 function toast(msg, type = '') {
-  const t = $('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + type;
+  const el = $('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.className = 'toast', 2500);
+  toastTimer = setTimeout(() => el.className = 'toast', 2500);
 }
 
 function popFloat(txt, neg) {
@@ -1232,12 +1528,12 @@ function confetti() {
 }
 
 // ============ EVENTS ============
-document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+document.querySelectorAll('.tab').forEach(tb => tb.addEventListener('click', () => {
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
   document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
-  t.classList.add('active');
-  $('view-' + t.dataset.view).classList.add('active');
-  if (t.dataset.view === 'home') loadFeed();
+  tb.classList.add('active');
+  $('view-' + tb.dataset.view).classList.add('active');
+  if (tb.dataset.view === 'home') loadFeed();
 }));
 
 document.addEventListener('click', e => { lastPt = { x:e.clientX, y:e.clientY }; }, true);
@@ -1255,6 +1551,7 @@ setInterval(rolloverIfNeeded, 60000);
 // ============ INIT ============
 initDefaults();
 checkDay();
+applyLang();
 render();
 loadFeed();
 checkMainQuestReminder();
